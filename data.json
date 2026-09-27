@@ -65,7 +65,20 @@
    },
    "av": "Rasmus",
    "skapad": "2026-09-27T20:11:29.441Z"
+  },
+  {
+   "id": "imuk9884wz12z",
+   "bild": "bilder/bmuk9871t9t03.jpg",
+   "bildSha": "b319607417acb289a17cdfd0fb0fa06b8a0285f5",
+   "rum": "vardagsrum",
+   "text": "",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-27T20:11:44.385Z"
   }
  ],
- "andrad": "2026-09-27T20:11:29.441Z"
+ "andrad": "2026-09-27T20:11:44.385Z"
 }
