@@ -38,34 +38,7 @@
    "zon": ""
   }
  ],
- "mobler": [
-  {
-   "id": "mmuk8yayq5zz5",
-   "namn": "Testmöbel (tas bort direkt)",
-   "rum": "ovrigt",
-   "status": "ide",
-   "pris": 1,
-   "antal": 1,
-   "ca": false,
-   "lank": "",
-   "bild": "bilder/bmuk8y9yxfcd9.jpg",
-   "bildSha": "324f98b8a03f853a1f3d290a59816ee3604eb6f3",
-   "matt": {
-    "b": null,
-    "d": null,
-    "h": null
-   },
-   "betalar": "delat",
-   "not": "",
-   "gillar": {
-    "rasmus": false,
-    "emily": false
-   },
-   "av": "Rasmus",
-   "skapad": "2026-09-27T20:04:01.476Z",
-   "andrad": "2026-09-27T20:04:01.152Z"
-  }
- ],
+ "mobler": [],
  "moodboard": [],
- "andrad": "2026-09-27T20:04:01.476Z"
+ "andrad": "2026-09-27T20:04:03.551Z"
 }
