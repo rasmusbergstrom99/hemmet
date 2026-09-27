@@ -270,7 +270,7 @@ main { max-width: 1160px; margin: 0 auto; padding: 4px 16px calc(var(--tabbar-h)
   width: 64px; height: 64px; border-radius: var(--r); background: var(--sunk); overflow: hidden;
   display: grid; place-items: center; color: var(--ink-3);
 }
-.thumb img { width: 100%; height: 100%; object-fit: cover; }
+.thumb img { width: 100%; height: 100%; object-fit: contain; background: #fff; }
 .thumb .ic { width: 26px; height: 26px; }
 .item-text { min-width: 0; display: grid; gap: 2px; }
 .item-name { font-weight: 600; font-size: 16px; line-height: 1.3; overflow-wrap: anywhere; }

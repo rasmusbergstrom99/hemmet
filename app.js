@@ -714,7 +714,7 @@ function thumbImg(src, alt) {
 function itemRow(m) {
   const src = imgSrc(m.bild);
   const meta = [];
-  if (m.antal > 1) meta.push(h('span', null, `${m.antal} st à ${kr(m.pris, m.ca)}`));
+  if (m.antal > 1) meta.push(h('span', null, m.pris == null ? `${m.antal} st` : `${m.antal} st à ${kr(m.pris, m.ca)}`));
   const dims = dimsText(m);
   if (dims) meta.push(h('span', null, dims));
   if (m.betalar !== 'delat' && m.status !== 'ide') meta.push(h('span', null, `${PAYERS[m.betalar]} betalar`));
@@ -1088,7 +1088,7 @@ function viewItem(m) {
   const facts = [
     ['Rum', roomName(d, m.rum)],
     ['Status', STATUS[m.status]],
-    ['Pris', m.pris == null ? 'Saknas' : (m.antal > 1 ? `${m.antal} st à ${kr(m.pris, m.ca)} = ${kr(lineTotal(m), m.ca)}` : kr(m.pris, m.ca))],
+    ['Pris', m.pris == null ? (m.antal > 1 ? `Saknas (${m.antal} st)` : 'Saknas') : (m.antal > 1 ? `${m.antal} st à ${kr(m.pris, m.ca)} = ${kr(lineTotal(m), m.ca)}` : kr(m.pris, m.ca))],
     dimsText(m) ? ['Mått', dimsText(m)] : null,
     m.status !== 'ide' ? ['Betalar', PAYERS[m.betalar]] : null,
     m.av ? ['Tillagd av', m.av + (m.skapad ? `, ${DF.format(new Date(m.skapad))}` : '')] : null,
