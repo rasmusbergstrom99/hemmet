@@ -1,0 +1,44 @@
+{
+ "version": 1,
+ "budget": 0,
+ "rum": [
+  {
+   "id": "vardagsrum",
+   "namn": "Vardagsrum",
+   "zon": "oppet"
+  },
+  {
+   "id": "kok",
+   "namn": "Kök & matplats",
+   "zon": "oppet"
+  },
+  {
+   "id": "sovrum",
+   "namn": "Sovrum",
+   "zon": "sovrum"
+  },
+  {
+   "id": "hall",
+   "namn": "Hall",
+   "zon": "hall"
+  },
+  {
+   "id": "badrum",
+   "namn": "Badrum",
+   "zon": "badrum"
+  },
+  {
+   "id": "balkong",
+   "namn": "Balkong",
+   "zon": "balkong"
+  },
+  {
+   "id": "ovrigt",
+   "namn": "Övrigt",
+   "zon": ""
+  }
+ ],
+ "mobler": [],
+ "moodboard": [],
+ "andrad": "2026-09-27T20:02:39Z"
+}
