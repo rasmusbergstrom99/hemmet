@@ -1,0 +1,16 @@
+{
+  "name": "Vårt hem",
+  "short_name": "Vårt hem",
+  "description": "Möbler, budget och moodboard för nya lägenheten.",
+  "lang": "sv",
+  "start_url": "./#kalkyl",
+  "scope": "./",
+  "display": "browser",
+  "background_color": "#faf9f5",
+  "theme_color": "#faf9f5",
+  "icons": [
+    { "src": "ikon-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "ikon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "ikon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
