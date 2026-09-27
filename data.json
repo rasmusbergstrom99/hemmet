@@ -39,6 +39,20 @@
   }
  ],
  "mobler": [],
- "moodboard": [],
- "andrad": "2026-09-27T20:04:03.551Z"
+ "moodboard": [
+  {
+   "id": "imuk97kdcnjvh",
+   "bild": "bilder/bmuk97j6oygl6.jpg",
+   "bildSha": "9a099f82e5a21c32d2f24fead48ea9ec66f06afd",
+   "rum": "vardagsrum",
+   "text": "",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-27T20:11:13.641Z"
+  }
+ ],
+ "andrad": "2026-09-27T20:11:13.642Z"
 }
