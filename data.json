@@ -33,12 +33,122 @@
    "zon": "balkong"
   },
   {
+   "id": "arbetsplats",
+   "namn": "Arbetsplats",
+   "zon": ""
+  },
+  {
    "id": "ovrigt",
    "namn": "Övrigt",
    "zon": ""
   }
  ],
- "mobler": [],
+ "mobler": [
+  {
+   "id": "m1a0e486a1d6js53",
+   "namn": "Hörnhylla, live edge",
+   "rum": "arbetsplats",
+   "status": "vald",
+   "pris": null,
+   "antal": 2,
+   "ca": false,
+   "lank": "https://www.etsy.com/listing/4539591396/live-edge-corner-floating-shelf-rustic",
+   "bild": "",
+   "bildSha": "",
+   "matt": {
+    "b": null,
+    "d": null,
+    "h": null
+   },
+   "betalar": "delat",
+   "not": "Från Etsy. Priset saknas, fyll i det från annonsen.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-27T20:20:23.000Z",
+   "andrad": "2026-09-27T20:20:23.000Z"
+  },
+  {
+   "id": "m1a0e486a1d7hl6n",
+   "namn": "Skrivbord Gudelia, hörn 158 cm",
+   "rum": "arbetsplats",
+   "status": "vald",
+   "pris": 3599,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://www.chilli.se/m%C3%B6bler/bord/kontorsbord/skrivbord/h%C3%B6rnskrivbord/gudelia-skrivbord-158-cm-brun-p3447743",
+   "bild": "https://www.chilli.se/assets/blobs/m%C3%B6bler-bord-kontorsbord-skrivbord-gudelia-skrivbord-158-cm-brun/e54e50e6-6dde-4a9a-8945-bab46b86da9d.jpg",
+   "bildSha": "",
+   "matt": {
+    "b": 158,
+    "d": 98,
+    "h": 76
+   },
+   "betalar": "delat",
+   "not": "Brun, valnötsfärg. Kampanjpris 27 september, ordinarie 4 399 kr.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-27T20:20:23.000Z",
+   "andrad": "2026-09-27T20:20:23.000Z"
+  },
+  {
+   "id": "m1a0e486a1d7eptx",
+   "namn": "Kontorsstol Nampa, cognac",
+   "rum": "arbetsplats",
+   "status": "vald",
+   "pris": 2019,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://www.barstol.se/kontorsstol-nampa-faerg-cognac/318558",
+   "bild": "https://www.barstol.se/media/2f/a5/19/1776241749/buerostuhl-nampa-198110.jpg?ts=1776241749",
+   "bildSha": "",
+   "matt": {
+    "b": 69,
+    "d": 61,
+    "h": 107
+   },
+   "betalar": "delat",
+   "not": "Höjd 97–107 cm, sitthöjd 44–54 cm. Konstläder.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-27T20:20:23.000Z",
+   "andrad": "2026-09-27T20:20:23.000Z"
+  },
+  {
+   "id": "m1a0e486a1d7c1ra",
+   "namn": "Persienner, gardinstång och hatthylla",
+   "rum": "ovrigt",
+   "status": "vald",
+   "pris": 2000,
+   "antal": 1,
+   "ca": false,
+   "lank": "",
+   "bild": "",
+   "bildSha": "",
+   "matt": {
+    "b": null,
+    "d": null,
+    "h": null
+   },
+   "betalar": "delat",
+   "not": "Köps av tidigare ägare, 2 000 kr för allt.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-27T20:20:23.000Z",
+   "andrad": "2026-09-27T20:20:23.000Z"
+  }
+ ],
  "moodboard": [
   {
    "id": "imuk97kdcnjvh",
@@ -80,5 +190,5 @@
    "skapad": "2026-09-27T20:11:44.385Z"
   }
  ],
- "andrad": "2026-09-27T20:11:44.385Z"
+ "andrad": "2026-09-27T20:20:23.000Z"
 }
