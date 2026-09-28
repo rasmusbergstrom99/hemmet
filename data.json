@@ -9,7 +9,12 @@
   },
   {
    "id": "kok",
-   "namn": "Kök & matplats",
+   "namn": "Kök",
+   "zon": "oppet"
+  },
+  {
+   "id": "matplats",
+   "namn": "Matplats",
    "zon": "oppet"
   },
   {
@@ -346,5 +351,5 @@
    "skapad": "2026-09-27T20:11:44.385Z"
   }
  ],
- "andrad": "2026-09-28T07:40:10.046Z"
+ "andrad": "2026-09-28T08:16:32.000Z"
 }
