@@ -227,32 +227,6 @@
    "andrad": "2026-09-28T07:37:21.000Z"
   },
   {
-   "id": "m1a0e6f268a5ikvx",
-   "namn": "Golvlampa STOCKHOLM 2025, IKEA",
-   "rum": "vardagsrum",
-   "status": "ide",
-   "pris": 1395,
-   "antal": 1,
-   "ca": false,
-   "lank": "https://www.ikea.com/se/sv/p/stockholm-2025-golvlampa-vit-textil-foermaessingad-50585914/",
-   "bild": "https://www.ikea.com/se/sv/images/products/stockholm-2025-golvlampa-vit-textil-foermaessingad__1285165_pe933236_s5.jpg",
-   "bildSha": "",
-   "matt": {
-    "b": 50,
-    "d": 50,
-    "h": 159
-   },
-   "betalar": "delat",
-   "not": "Till läshörnan. Vit textilskärm, mässing och fot i sten. Tre E27-lampor ingår inte: välj dimbara på 2 200–2 700 K och ca 250 lm var.",
-   "gillar": {
-    "rasmus": false,
-    "emily": false
-   },
-   "av": "Rasmus",
-   "skapad": "2026-09-28T07:37:21.000Z",
-   "andrad": "2026-09-28T07:37:21.000Z"
-  },
-  {
    "id": "m1a0e6f268a510cx",
    "namn": "Disco mushroom, portabel",
    "rum": "vardagsrum",
@@ -372,5 +346,5 @@
    "skapad": "2026-09-27T20:11:44.385Z"
   }
  ],
- "andrad": "2026-09-28T07:40:03.794Z"
+ "andrad": "2026-09-28T07:40:10.046Z"
 }
