@@ -46,29 +46,29 @@
  "mobler": [
   {
    "id": "m1a0e486a1d6js53",
-   "namn": "Hörnhylla, live edge",
+   "namn": "Hörnhyllor, LACK brun valnöt",
    "rum": "arbetsplats",
    "status": "vald",
-   "pris": null,
-   "antal": 2,
+   "pris": 149,
+   "antal": 4,
    "ca": false,
-   "lank": "https://www.etsy.com/listing/4539591396/live-edge-corner-floating-shelf-rustic",
-   "bild": "",
+   "lank": "https://www.ikea.com/se/sv/p/lack-vaegghylla-brun-valnoetsmoenstrad-70653327/",
+   "bild": "https://www.ikea.com/se/sv/images/products/lack-vaegghylla-brun-valnoetsmoenstrad__1564194_pe1026597_s5.jpg",
    "bildSha": "",
    "matt": {
-    "b": null,
-    "d": null,
-    "h": null
+    "b": 110,
+    "d": 26,
+    "h": 5
    },
    "betalar": "delat",
-   "not": "Från Etsy. Priset saknas, fyll i det från annonsen.",
+   "not": "Fyra brädor blir två hörnhyllor: två brädor per våning möts i hörnet och bildar ett L, som på inspirationsbilden. 5 cm tjocka med dolda beslag. Brun valnötsmönstrad, närmast skrivbordets ton av det vi jämförde. Tål 10 kg per bräda, 5 kg i gipsvägg. En hylla i ett stycke i äkta valnöt finns bara som specialbeställning från USA eller Etsy, ca 4 000–5 000 kr per hylla plus frakt och importmoms.",
    "gillar": {
     "rasmus": false,
     "emily": false
    },
    "av": "Rasmus",
    "skapad": "2026-09-27T20:20:23.000Z",
-   "andrad": "2026-09-27T20:20:23.000Z"
+   "andrad": "2026-09-28T07:26:12.000Z"
   },
   {
    "id": "m1a0e486a1d7hl6n",
@@ -216,5 +216,5 @@
    "skapad": "2026-09-27T20:11:44.385Z"
   }
  ],
- "andrad": "2026-09-28T06:59:48.000Z"
+ "andrad": "2026-09-28T07:26:12.000Z"
 }
