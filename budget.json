@@ -1,5 +1,11 @@
 {
  "version": 1,
- "rum": {},
- "andrad": "2026-09-28T08:16:33.000Z"
+ "rum": {
+  "arbetsplats": {
+   "rasmus": 4500,
+   "emily": 0,
+   "delar": []
+  }
+ },
+ "andrad": "2026-09-28T08:20:20.568Z"
 }
