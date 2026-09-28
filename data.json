@@ -157,7 +157,7 @@
    "id": "m1a0e6d007fcyl9y",
    "namn": "TV-väggen",
    "rum": "vardagsrum",
-   "status": "vald",
+   "status": "ide",
    "pris": 14700,
    "antal": 1,
    "ca": true,
@@ -177,7 +177,7 @@
    },
    "av": "Rasmus",
    "skapad": "2026-09-28T06:59:48.000Z",
-   "andrad": "2026-09-28T06:59:48.000Z"
+   "andrad": "2026-09-28T11:23:40.062Z"
   },
   {
    "id": "m1a0e6f268a53et1",
@@ -546,5 +546,5 @@
    "skapad": "2026-09-28T11:09:00.710Z"
   }
  ],
- "andrad": "2026-09-28T11:15:01.000Z"
+ "andrad": "2026-09-28T11:23:40.435Z"
 }
