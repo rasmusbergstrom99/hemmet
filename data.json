@@ -173,6 +173,188 @@
    "av": "Rasmus",
    "skapad": "2026-09-28T06:59:48.000Z",
    "andrad": "2026-09-28T06:59:48.000Z"
+  },
+  {
+   "id": "m1a0e6f268a53et1",
+   "namn": "Bordslampa AKTERSPRING, IKEA",
+   "rum": "sovrum",
+   "status": "ide",
+   "pris": 399,
+   "antal": 2,
+   "ca": false,
+   "lank": "https://www.ikea.com/se/sv/p/akterspring-bordslampa-opalvit-glas-foermaessingad-00586548/",
+   "bild": "https://www.ikea.com/se/sv/images/products/akterspring-bordslampa-opalvit-glas-foermaessingad__1416207_pe975489_s5.jpg",
+   "bildSha": "",
+   "matt": {
+    "b": 30,
+    "d": 21,
+    "h": 39
+   },
+   "betalar": "delat",
+   "not": "Till sängborden. Opalglas och mässing ger ett mjukt, varmt ljus. Lamporna ingår inte: välj två E14 på 2 200–2 700 K med låg ljusstyrka.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T07:37:21.000Z",
+   "andrad": "2026-09-28T07:37:21.000Z"
+  },
+  {
+   "id": "m1a0e6f268a5b1xi",
+   "namn": "Bordslampa Flowerpot VP3, &Tradition",
+   "rum": "vardagsrum",
+   "status": "ide",
+   "pris": 2258,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://royaldesign.se/flowerpot-vp3-bordslampa",
+   "bild": "https://media.royaldesign.se/1/tradition-flowerpot-vp3-bordslampa-277",
+   "bildSha": "",
+   "matt": {
+    "b": 23,
+    "d": 23,
+    "h": 50
+   },
+   "betalar": "delat",
+   "not": "Verner Pantons klassiker från 1968, i gråbeige. Lampan ingår inte: välj en dimbar E27 på 2 200–2 700 K. 50 cm hög, passar bäst på ett sideboard eller bord.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T07:37:21.000Z",
+   "andrad": "2026-09-28T07:37:21.000Z"
+  },
+  {
+   "id": "m1a0e6f268a5ikvx",
+   "namn": "Golvlampa STOCKHOLM 2025, IKEA",
+   "rum": "vardagsrum",
+   "status": "ide",
+   "pris": 1395,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://www.ikea.com/se/sv/p/stockholm-2025-golvlampa-vit-textil-foermaessingad-50585914/",
+   "bild": "https://www.ikea.com/se/sv/images/products/stockholm-2025-golvlampa-vit-textil-foermaessingad__1285165_pe933236_s5.jpg",
+   "bildSha": "",
+   "matt": {
+    "b": 50,
+    "d": 50,
+    "h": 159
+   },
+   "betalar": "delat",
+   "not": "Till läshörnan. Vit textilskärm, mässing och fot i sten. Tre E27-lampor ingår inte: välj dimbara på 2 200–2 700 K och ca 250 lm var.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T07:37:21.000Z",
+   "andrad": "2026-09-28T07:37:21.000Z"
+  },
+  {
+   "id": "m1a0e6f268a51pfm",
+   "namn": "Golvlampa Cannes 140, Globen Lighting",
+   "rum": "vardagsrum",
+   "status": "ide",
+   "pris": 2639,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://www.svenssons.se/varumarken/globen-lighting/cannes-golvlampa-140-cm/?variantId=648917-01",
+   "bild": "https://prod.nordicnest.dev/assets/blobs/globen-lighting-cannes-golvlampa-140-cm-mocha/648917-01_1_ProductImageMain-5aeaba5d0f.png",
+   "bildSha": "",
+   "matt": {
+    "b": 42,
+    "d": 42,
+    "h": 140
+   },
+   "betalar": "delat",
+   "not": "Riktat läsljus i mockabrun metall, går ihop med valnöten. Kampanjpris, ordinarie 3 499 kr. Lampan ingår inte: välj en dimbar E27 på 2 200–2 700 K.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T07:37:21.000Z",
+   "andrad": "2026-09-28T07:37:21.000Z"
+  },
+  {
+   "id": "m1a0e6f268a510cx",
+   "namn": "Disco mushroom, portabel",
+   "rum": "vardagsrum",
+   "status": "ide",
+   "pris": 449,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://brandstationenstore.se/products/portabel-lampa-disco-svamp",
+   "bild": "https://brandstationenstore.se/cdn/shop/files/SHOPIFYSIZE_7_png.webp?v=1751376101&width=1024",
+   "bildSha": "",
+   "matt": {
+    "b": 12,
+    "d": 12,
+    "h": 16.5
+   },
+   "betalar": "delat",
+   "not": "Svamp i spegelmosaik som går på batteri, så den kan stå i bokhyllan. Den glittrar mest när en annan lampa lyser på den. En större nätansluten version på 24 cm finns hos L'Avant Gardiste, ca 680 kr plus frakt.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T07:37:21.000Z",
+   "andrad": "2026-09-28T07:37:21.000Z"
+  },
+  {
+   "id": "m1a0e6f268a5yzfm",
+   "namn": "Svamplampa Panthella 160 Portable, Louis Poulsen",
+   "rum": "vardagsrum",
+   "status": "ide",
+   "pris": 1560,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://www.nordicnest.se/varumarken/louis-poulsen/panthella-160-portable-v3-bordslampa/?variantId=634014-01",
+   "bild": "https://prod.kitchentime.dev/assets/blobs/louis-poulsen-panthella-160-portable-v3-bordslampa-opal-white/634014-01_1_ProductImageMain-c81a03da64.png",
+   "bildSha": "",
+   "matt": {
+    "b": 16,
+    "d": 16,
+    "h": 24
+   },
+   "betalar": "delat",
+   "not": "Svamplampans klassiker utan sladd, opalvit. 2 700 K och tre ljusnivåer. Räcker 8,5 h på fullt och upp till 79 h på lägsta. Laddas med USB-C. Kampanjpris, ordinarie 2 345 kr. För bokhyllor och fönsterbrädor.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T07:37:21.000Z",
+   "andrad": "2026-09-28T07:37:21.000Z"
+  },
+  {
+   "id": "m1a0e6f268a5yxz5",
+   "namn": "Svamplampa Cannes Portable brun, Globen Lighting",
+   "rum": "vardagsrum",
+   "status": "ide",
+   "pris": 983,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://www.nordicnest.se/varumarken/globen-lighting/cannes-portabel-bordslampa/?variantId=639805-01",
+   "bild": "https://prod.nordicnest.dev/assets/blobs/globen-lighting-cannes-portabel-bordslampa-brun/639805-01_1_ProductImageMain-da0bf2cdfb.png",
+   "bildSha": "",
+   "matt": {
+    "b": 19,
+    "d": 19,
+    "h": 26
+   },
+   "betalar": "delat",
+   "not": "Sladdlös svamplampa i brunt. 2 700 K, steglös dimring och minst 8 h på en laddning, med USB-C. Kampanjpris, ordinarie 1 499 kr. Det billigare valet om ni vill ha flera i hyllorna och fönsterbrädorna.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T07:37:21.000Z",
+   "andrad": "2026-09-28T07:37:21.000Z"
   }
  ],
  "moodboard": [
@@ -216,5 +398,5 @@
    "skapad": "2026-09-27T20:11:44.385Z"
   }
  ],
- "andrad": "2026-09-28T07:26:12.000Z"
+ "andrad": "2026-09-28T07:37:21.000Z"
 }
