@@ -308,32 +308,6 @@
    "av": "Rasmus",
    "skapad": "2026-09-28T07:37:21.000Z",
    "andrad": "2026-09-28T07:37:21.000Z"
-  },
-  {
-   "id": "mmul54nr0apxh",
-   "namn": "IKEA PS 2026 sängbord, furu",
-   "rum": "sovrum",
-   "status": "ide",
-   "pris": 599,
-   "antal": 1,
-   "ca": false,
-   "lank": "https://www.ikea.com/se/sv/p/ikea-ps-2026-saengbord-furu-med-nedfaellbar-doerr-60619942/",
-   "bild": "https://www.ikea.com/se/sv/images/products/ikea-ps-2026-saengbord-furu-med-nedfaellbar-doerr__1472079_pe997449_s5.jpg",
-   "bildSha": "",
-   "matt": {
-    "b": 30,
-    "d": 30,
-    "h": 50
-   },
-   "betalar": "delat",
-   "not": "Ljust, smalt sängbord i massiv furu. Kontrollera utrymmet bredvid sängen och garderoben före köp.",
-   "gillar": {
-    "rasmus": false,
-    "emily": false
-   },
-   "av": "Rasmus",
-   "skapad": "2026-09-28T11:04:45.372Z",
-   "andrad": "2026-09-28T11:04:45.372Z"
   }
  ],
  "moodboard": [
@@ -377,5 +351,5 @@
    "skapad": "2026-09-27T20:11:44.385Z"
   }
  ],
- "andrad": "2026-09-28T11:04:45.850Z"
+ "andrad": "2026-09-28T11:04:56.934Z"
 }
