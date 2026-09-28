@@ -17,8 +17,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&amp;display=swap">
-<link rel="stylesheet" href="style.css?v=c268cb33">
-<script src="app.js?v=8de076de" defer></script>
+<link rel="stylesheet" href="style.css?v=03ebad81">
+<script src="app.js?v=7b8c34d6" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Hoppa till innehållet</a>
@@ -29,9 +29,10 @@
     <p>Möbler, budget och moodboard</p>
   </div>
   <nav class="tabs" aria-label="Vyer">
-    <a href="#kalkyl" data-view="kalkyl"><svg class="ic" aria-hidden="true"><use href="ikoner.svg#i-coins"/></svg><span>Kalkyl</span></a>
-    <a href="#moodboard" data-view="moodboard"><svg class="ic" aria-hidden="true"><use href="ikoner.svg#i-images-square"/></svg><span>Moodboard</span></a>
-    <a href="#ritning" data-view="ritning"><svg class="ic" aria-hidden="true"><use href="ikoner.svg#i-blueprint"/></svg><span>Ritning</span></a>
+    <a href="#kalkyl" data-view="kalkyl"><svg class="ic" aria-hidden="true"><use href="ikoner.svg?v=2#i-coins"/></svg><span>Kalkyl</span></a>
+    <a href="#budget" data-view="budget"><svg class="ic" aria-hidden="true"><use href="ikoner.svg?v=2#i-wallet"/></svg><span>Budget</span></a>
+    <a href="#moodboard" data-view="moodboard"><svg class="ic" aria-hidden="true"><use href="ikoner.svg?v=2#i-images-square"/></svg><span>Moodboard</span></a>
+    <a href="#ritning" data-view="ritning"><svg class="ic" aria-hidden="true"><use href="ikoner.svg?v=2#i-blueprint"/></svg><span>Ritning</span></a>
   </nav>
   <div class="top-actions" id="top-actions"></div>
 </header>
@@ -40,12 +41,13 @@
 
 <main id="main" tabindex="-1">
   <section id="view-kalkyl" class="view" aria-label="Kalkyl"></section>
+  <section id="view-budget" class="view" aria-label="Budget" hidden></section>
   <section id="view-moodboard" class="view" aria-label="Moodboard" hidden></section>
   <section id="view-ritning" class="view" aria-label="Ritning" hidden></section>
 </main>
 
 <button id="fab" class="fab" type="button" hidden>
-  <svg class="ic" aria-hidden="true"><use href="ikoner.svg#i-plus"/></svg><span></span>
+  <svg class="ic" aria-hidden="true"><use href="ikoner.svg?v=2#i-plus"/></svg><span></span>
 </button>
 
 <div id="toasts" class="toasts" aria-live="polite"></div>

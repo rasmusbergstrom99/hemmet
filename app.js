@@ -1,8 +1,11 @@
 /* Vårt hem: möbelkalkyl, moodboard och planritning för nya lägenheten.
 
    Allt innehåll ligger i repot rasmusbergstrom99/hemmet, på grenen "data":
-     data.json   budget, rum, möbler och moodboard
+     data.json   rum, möbler och moodboard
+     budget.json vad var och en lägger per rum, och delarna rummen är fördelade på
      bilder/     uppladdade bilder
+   Budgeten ligger i en egen fil så att en äldre version av sidan, som bara känner till
+   data.json, aldrig kan skriva över den.
    Sidan själv ligger på grenen main och publiceras med GitHub Pages.
 
    Att läsa kräver ingen nyckel. För att ändra behövs en GitHub-nyckel (fine-grained token
@@ -11,6 +14,9 @@
 'use strict';
 
 const CFG = { owner: 'rasmusbergstrom99', repo: 'hemmet', branch: 'data', file: 'data.json' };
+const BUDGET_FILE = 'budget.json';
+// Den högsta versionen av varje fil den här sidan förstår. En nyare fil sparas inte över.
+const KNOWN_VERSION = { [CFG.file]: 1, [BUDGET_FILE]: 1 };
 const API = `https://api.github.com/repos/${CFG.owner}/${CFG.repo}`;
 const RAW = `https://raw.githubusercontent.com/${CFG.owner}/${CFG.repo}/${CFG.branch}/`;
 
@@ -21,14 +27,16 @@ const PAYERS = { delat: 'Delat', rasmus: 'Rasmus', emily: 'Emily' };
 const ZONES = { oppet: 'Vardagsrum & kök', sovrum: 'Sovrum', hall: 'Hall', badrum: 'Badrum', balkong: 'Balkong', '': 'Ingen plats på ritningen' };
 const DEFAULT_ROOMS = [
   { id: 'vardagsrum', namn: 'Vardagsrum', zon: 'oppet' },
-  { id: 'kok', namn: 'Kök & matplats', zon: 'oppet' },
+  { id: 'kok', namn: 'Kök', zon: 'oppet' },
+  { id: 'matplats', namn: 'Matplats', zon: 'oppet' },
   { id: 'sovrum', namn: 'Sovrum', zon: 'sovrum' },
   { id: 'hall', namn: 'Hall', zon: 'hall' },
   { id: 'badrum', namn: 'Badrum', zon: 'badrum' },
   { id: 'balkong', namn: 'Balkong', zon: 'balkong' },
+  { id: 'arbetsplats', namn: 'Arbetsplats', zon: '' },
   { id: 'ovrigt', namn: 'Övrigt', zon: '' },
 ];
-const VIEWS = ['kalkyl', 'moodboard', 'ritning'];
+const VIEWS = ['kalkyl', 'budget', 'moodboard', 'ritning'];
 const KEY_STORE = 'hemmet.nyckel';
 const ME_STORE = 'hemmet.jag';
 
@@ -40,8 +48,10 @@ const store = {
 
 const S = {
   data: null,
+  budget: null,
   loading: false,
   loadErr: false,
+  budgetErr: false,
   loadedAt: 0,
   key: store.get(KEY_STORE),
   me: PEOPLE[store.get(ME_STORE)] ? store.get(ME_STORE) : null,
@@ -86,7 +96,7 @@ function icon(name, cls) {
   s.setAttribute('class', 'ic' + (cls ? ' ' + cls : ''));
   s.setAttribute('aria-hidden', 'true');
   const u = document.createElementNS(SVGNS, 'use');
-  u.setAttribute('href', 'ikoner.svg#i-' + name);
+  u.setAttribute('href', 'ikoner.svg?v=2#i-' + name);   // ?v= byts när ikonerna ändras, så att ingen får en gammal fil
   s.append(u);
   return s;
 }
@@ -200,16 +210,96 @@ function totals(items) {
   return { plan, kopt, vald: plan - kopt, ide, ideN };
 }
 
-function payers(items) {
+// ---- budget (budget.json)
+
+function normPart(p) {
+  return {
+    id: String(p.id),
+    namn: String(p.namn || '').slice(0, 80),
+    belopp: Math.round(num(p.belopp)),
+    mobler: Array.isArray(p.mobler) ? [...new Set(p.mobler.map(String))] : [],
+  };
+}
+
+function normBudget(b) {
+  b = b && typeof b === 'object' ? b : {};
+  const src = b.rum && typeof b.rum === 'object' && !Array.isArray(b.rum) ? b.rum : {};
+  const rum = {};
+  for (const [id, v] of Object.entries(src)) {
+    if (!v || typeof v !== 'object') continue;
+    rum[String(id)] = {
+      rasmus: Math.round(num(v.rasmus)),
+      emily: Math.round(num(v.emily)),
+      delar: Array.isArray(v.delar) ? v.delar.filter((p) => p && p.id).map(normPart) : [],
+    };
+  }
+  return { version: 1, rum, andrad: b.andrad ? String(b.andrad) : '' };
+}
+
+function roomBud(rid) {
+  const b = S.budget && S.budget.rum[rid];
+  if (!b) return { rasmus: 0, emily: 0, total: 0, delar: [] };
+  return { rasmus: b.rasmus, emily: b.emily, total: b.rasmus + b.emily, delar: b.delar };
+}
+function hasBudget(rid) { const b = roomBud(rid); return b.total > 0 || b.delar.length > 0; }
+
+function budgetTotals(d) {
+  const r = { rasmus: 0, emily: 0 };
+  for (const room of d.rum) { const b = roomBud(room.id); r.rasmus += b.rasmus; r.emily += b.emily; }
+  return { ...r, total: r.rasmus + r.emily };
+}
+
+/* Hur ett köp fördelas mellan er. Betalar en av er står den för allt. Ett delat köp delas
+   som ni delat rummets budget: lägger Rasmus 7 000 och Emily 1 500 på ett rum tar Rasmus
+   82 procent av det delade där. Rum utan budget delas lika. */
+function split(m) {
+  if (m.betalar === 'rasmus') return { rasmus: 1, emily: 0 };
+  if (m.betalar === 'emily') return { rasmus: 0, emily: 1 };
+  const b = roomBud(m.rum);
+  return b.total > 0 ? { rasmus: b.rasmus / b.total, emily: b.emily / b.total } : { rasmus: 0.5, emily: 0.5 };
+}
+
+// Var och ens del av det valda och köpta (idéer räknas inte). Med onlyKopt: bara det köpta.
+function shares(items, onlyKopt) {
   const r = { rasmus: 0, emily: 0 };
   for (const m of items) {
-    if (m.status !== 'kopt') continue;
-    const t = lineTotal(m);
-    if (m.betalar === 'rasmus') r.rasmus += t;
-    else if (m.betalar === 'emily') r.emily += t;
-    else { r.rasmus += t / 2; r.emily += t / 2; }
+    if (m.status === 'ide' || (onlyKopt && m.status !== 'kopt')) continue;
+    const t = lineTotal(m), s = split(m);
+    r.rasmus += t * s.rasmus;
+    r.emily += t * s.emily;
   }
   return r;
+}
+
+// Rummets delar med det valda i varje del. En möbel räknas i högst en del.
+function partsView(d, rid) {
+  const b = roomBud(rid);
+  const items = d.mobler.filter((m) => m.rum === rid);
+  const taken = new Set();
+  const parts = b.delar.map((p) => {
+    const its = items.filter((m) => p.mobler.includes(m.id) && !taken.has(m.id));
+    its.forEach((m) => taken.add(m.id));
+    return { ...p, t: totals(its) };
+  });
+  const fordelat = b.delar.reduce((s, p) => s + p.belopp, 0);
+  return { parts, fordelat, rest: { belopp: Math.max(0, b.total - fordelat), t: totals(items.filter((m) => !taken.has(m.id))) } };
+}
+
+// Säger rakt ut om ni har råd, tillsammans och var för sig.
+function verdict(bt, t, sh) {
+  if (!bt.total) return null;
+  const diff = bt.total - t.plan;
+  const missing = Object.keys(PEOPLE).filter((p) => !bt[p]);
+  const overP = Object.keys(PEOPLE).filter((p) => bt[p] && sh[p] > bt[p] + 0.5);
+  const parts = [];
+  if (diff < -0.5) parts.push(`Det ni valt kostar ${kr(-diff)} mer än er budget.`);
+  else if (overP.length) parts.push(`Tillsammans går det ihop, med ${kr(diff)} kvar.`);
+  else parts.push(`Ni har råd med det ni valt, och har ${kr(diff)} kvar tillsammans.`);
+  if (overP.length) {
+    parts.push(overP.map((p, i) => (i === 0 ? `${PEOPLE[p]} går över sin del med ${kr(sh[p] - bt[p])}` : `${PEOPLE[p]} med ${kr(sh[p] - bt[p])}`)).join(' och ') + '.');
+  }
+  if (missing.length) parts.push(`${PEOPLE[missing[0]]} har inte fyllt i sin budget än.`);
+  return { bad: diff < -0.5 || overP.length > 0, text: parts.join(' ') };
 }
 
 function roomName(d, id) { return d.rum.find((r) => r.id === id)?.namn || 'Utan rum'; }
@@ -228,6 +318,7 @@ function errText(e) {
     case 'konflikt': return 'Någon annan sparade samtidigt. Försök igen.';
     case 'natverk': return 'Ingen kontakt med GitHub. Kolla uppkopplingen och försök igen.';
     case 'bild': return 'Bilden gick inte att spara.';
+    case 'ny': return 'Sidan har uppdaterats sedan du öppnade den. Ladda om sidan och försök igen.';
     default: return `Det gick inte att spara (fel ${e.status || '?'}).`;
   }
 }
@@ -275,46 +366,61 @@ async function fetchRemote() {
   throw new ApiError('hamta', rr.status);
 }
 
+// budget.json finns inte förrän någon sparat en budget första gången; då är budgeten tom.
+async function fetchBudget() {
+  let r = null;
+  try { r = await gh(`/contents/${BUDGET_FILE}?ref=${CFG.branch}`, { auth: !!S.key }); } catch { r = null; }
+  if (r && r.status === 404) return normBudget({});
+  if (r && r.ok) {
+    const j = await r.json();
+    return normBudget(JSON.parse(b64decText(j.content)));
+  }
+  const rr = await fetch(RAW + BUDGET_FILE + '?t=' + Date.now(), { cache: 'no-store' });
+  if (rr.status === 404) return normBudget({});
+  if (rr.ok) return normBudget(await rr.json());
+  throw new ApiError('hamta', rr.status);
+}
+
 async function load(silent) {
   if (S.loading) return;
   S.loading = true;
   if (!silent) render();
-  try {
-    S.data = await fetchRemote();
-    S.loadErr = false;
-    S.loadedAt = Date.now();
-  } catch {
-    S.loadErr = true;
-  } finally {
-    S.loading = false;
-    render();
-  }
+  const [dr, br] = await Promise.allSettled([fetchRemote(), fetchBudget()]);
+  if (dr.status === 'fulfilled') { S.data = dr.value; S.loadErr = false; S.loadedAt = Date.now(); }
+  else S.loadErr = true;
+  if (br.status === 'fulfilled') { S.budget = br.value; S.budgetErr = false; }
+  else S.budgetErr = true;
+  S.loading = false;
+  render();
 }
 
 /* Varje ändring läser senaste versionen, gör ändringen och sparar med versionens sha.
    Har någon annan hunnit spara emellan svarar GitHub 409, då görs samma ändring om på
-   den nya versionen. Ändringarna är därför skrivna som "sätt", aldrig som "växla". */
-async function commit(mutate, message) {
+   den nya versionen. Ändringarna är därför skrivna som "sätt", aldrig som "växla".
+   Är filen sparad av en nyare version av sidan sparas inget, så att inget försvinner. */
+async function commitJson(file, norm, mutate, message, opts = {}) {
   if (!S.key) { openUnlock(); throw new ApiError('last'); }
   S.busy += 1; renderTop();
   try {
     for (let attempt = 0; attempt < 4; attempt++) {
-      const r0 = await gh(DATA_PATH);
+      const r0 = await gh(`/contents/${file}?ref=${CFG.branch}`);
       if (r0.status === 401) { S.keyBad = true; throw new ApiError('nyckel', 401); }
-      if (!r0.ok) throw new ApiError('hamta', r0.status);
-      const j0 = await r0.json();
-      const next = normalize(JSON.parse(b64decText(j0.content)));
+      let sha = null, raw = {};
+      if (r0.ok) {
+        const j0 = await r0.json();
+        sha = j0.sha;
+        raw = JSON.parse(b64decText(j0.content));
+      } else if (!(r0.status === 404 && opts.mayCreate)) {
+        throw new ApiError('hamta', r0.status);
+      }
+      if (Number(raw.version) > (KNOWN_VERSION[file] || 1)) throw new ApiError('ny');
+      const next = norm(raw);
       mutate(next);
       next.andrad = nowIso();
-      const r1 = await gh(`/contents/${CFG.file}`, {
-        method: 'PUT',
-        body: { message, content: b64encText(JSON.stringify(next, null, 1) + '\n'), sha: j0.sha, branch: CFG.branch },
-      });
-      if (r1.ok) {
-        S.data = next; S.loadedAt = Date.now(); S.keyBad = false;
-        render();
-        return next;
-      }
+      const body = { message, content: b64encText(JSON.stringify(next, null, 1) + '\n'), branch: CFG.branch };
+      if (sha) body.sha = sha;
+      const r1 = await gh(`/contents/${file}`, { method: 'PUT', body });
+      if (r1.ok) { S.loadedAt = Date.now(); S.keyBad = false; return next; }
       if (r1.status === 409 || r1.status === 422) { await sleep(400 * (attempt + 1)); continue; }
       if (r1.status === 401) { S.keyBad = true; throw new ApiError('nyckel', 401); }
       if (r1.status === 403 || r1.status === 404) throw new ApiError('skriv', r1.status);
@@ -324,6 +430,20 @@ async function commit(mutate, message) {
   } finally {
     S.busy -= 1; renderTop();
   }
+}
+
+async function commit(mutate, message) {
+  const next = await commitJson(CFG.file, normalize, mutate, message);
+  S.data = next;
+  render();
+  return next;
+}
+
+async function commitBudget(mutate, message) {
+  const next = await commitJson(BUDGET_FILE, normBudget, mutate, message, { mayCreate: true });
+  S.budget = next; S.budgetErr = false;
+  render();
+  return next;
 }
 
 async function uploadImage(blob) {
@@ -474,6 +594,7 @@ function render() {
     else a.removeAttribute('aria-current');
   });
   if (S.view === 'kalkyl') renderKalkyl();
+  else if (S.view === 'budget') renderBudget();
   else if (S.view === 'moodboard') renderMoodboard();
   else renderRitning();
   renderFab();
@@ -502,6 +623,9 @@ function renderBanner() {
       h('button', { class: 'btn btn-sm', type: 'button', onclick: openUnlock }, 'Lås upp igen')];
   } else if (S.loadErr && S.data) {
     node = [icon('warning-circle'), h('span', null, 'Kunde inte hämta senaste versionen.'),
+      h('button', { class: 'btn btn-sm', type: 'button', onclick: () => load() }, 'Försök igen')];
+  } else if (S.budgetErr && S.data) {
+    node = [icon('warning-circle'), h('span', null, S.budget ? 'Kunde inte hämta senaste budgeten.' : 'Budgeten gick inte att hämta, så den räknas inte med just nu.'),
       h('button', { class: 'btn btn-sm', type: 'button', onclick: () => load() }, 'Försök igen')];
   }
   b.hidden = !node;
@@ -550,7 +674,8 @@ function renderKalkyl() {
 }
 
 function budgetPanel(d, t) {
-  const B = d.budget || 0;
+  const bt = budgetTotals(d);
+  const B = bt.total;
   const over = B > 0 && t.plan > B;
   const scale = Math.max(B, t.plan);
   let label, value;
@@ -568,14 +693,15 @@ function budgetPanel(d, t) {
     over ? h('div', { class: 'budget-mark', style: { left: `calc(${pct(B, scale)}% - 1px)` } }, h('span', null, 'budget')) : null);
 
   const edit = S.key
-    ? h('button', { class: 'btn btn-quiet btn-sm', type: 'button', onclick: openBudget }, icon('pencil-simple'), B ? 'Ändra' : 'Sätt budget')
+    ? h('a', { class: 'btn btn-quiet btn-sm', href: '#budget' }, icon('pencil-simple'), B ? 'Ändra' : 'Sätt budget')
     : null;
 
-  const pay = payers(d.mobler);
+  const sh = shares(d.mobler);
+  const paid = shares(d.mobler, true);
   const notes = [];
   if (t.ideN === 1) notes.push(h('p', null, '1 idé för ', h('b', null, kr(t.ide)), ' räknas inte med förrän den är vald.'));
   else if (t.ideN > 1) notes.push(h('p', null, `${t.ideN} idéer för `, h('b', null, kr(t.ide)), ' räknas inte med förrän de är valda.'));
-  if (t.kopt > 0) notes.push(h('p', null, 'Utlagt hittills: Rasmus ', h('b', null, kr(pay.rasmus)), ', Emily ', h('b', null, kr(pay.emily)), '. Delade köp räknas hälften var.'));
+  if (t.kopt > 0) notes.push(h('p', null, 'Utlagt hittills: Rasmus ', h('b', null, kr(paid.rasmus)), ', Emily ', h('b', null, kr(paid.emily)), '. Delade köp delas som ni delat rummets budget, annars lika.'));
 
   return h('section', { class: 'panel budget' + (over ? ' over' : ''), 'aria-label': 'Budget' },
     h('div', { class: 'budget-top' },
@@ -589,42 +715,72 @@ function budgetPanel(d, t) {
       h('li', null, h('i', { class: 'sw kopt', 'aria-hidden': 'true' }), 'Köpt', h('b', null, kr(t.kopt))),
       h('li', null, h('i', { class: 'sw plan', 'aria-hidden': 'true' }), 'Att köpa', h('b', null, kr(t.vald))),
       B ? h('li', null, h('i', { class: 'sw rest', 'aria-hidden': 'true' }), 'Budget', h('b', null, kr(B))) : null),
+    B ? h('div', { class: 'people' }, h('h3', null, 'Per person'),
+      Object.keys(PEOPLE).map((p) => personRow(p, bt[p], sh[p]))) : null,
     notes.length ? h('div', { class: 'subnote' }, notes) : null);
+}
+
+// En rad per person: din del av det valda mot din budget, med en egen liten stapel.
+function personRow(p, budget, used) {
+  const over = used > budget + 0.5;
+  const scale = Math.max(budget, used, 1);
+  const val = !budget
+    ? h('span', { class: 'p-val' }, kr(used), h('small', null, ' ingen budget'))
+    : h('span', { class: 'p-val' }, NF.format(Math.round(used)), h('small', null, ` av ${kr(budget)}`));
+  // Utan budget finns inget att fylla, så då ritas ingen stapel (en full stapel skulle se ut som 100 procent).
+  const bar = !budget ? null : h('span', { class: 'pmeter', role: 'img', 'aria-label': `${PEOPLE[p]}: ${kr(used)} av ${kr(budget)}` },
+    h('span', { class: 'fill', style: { width: pct(Math.min(used, budget), scale) + '%' } }),
+    over ? h('span', { class: 'fill over', style: { width: pct(used - budget, scale) + '%' } }) : null,
+    over ? h('span', { class: 'mark', style: { left: `calc(${pct(budget, scale)}% - 1px)` } }) : null);
+  return h('div', { class: 'prow' + (over && budget ? ' over' : '') },
+    h('span', { class: 'p-name' }, PEOPLE[p]), val, bar,
+    over && budget ? h('span', { class: 'p-sub' }, `Över med ${kr(used - budget)}`) : null);
 }
 
 function roomsPanel(d) {
   const known = new Set(d.rum.map((r) => r.id));
-  const rows = d.rum.map((r) => ({ r, items: d.mobler.filter((m) => m.rum === r.id) }));
+  const rows = d.rum.map((r) => ({ r, items: d.mobler.filter((m) => m.rum === r.id), b: roomBud(r.id).total }));
   const orphans = d.mobler.filter((m) => !known.has(m.rum));
-  if (orphans.length) rows.push({ r: { id: '__utan', namn: 'Utan rum' }, items: orphans });
-  if (!d.mobler.length) return null;
-  const max = Math.max(1, ...rows.map((x) => totals(x.items).plan));
+  if (orphans.length) rows.push({ r: { id: '__utan', namn: 'Utan rum' }, items: orphans, b: 0 });
+  const shown = rows.filter((x) => x.items.length || x.b);
+  if (!shown.length) return null;
+  const max = Math.max(1, ...shown.map((x) => Math.max(totals(x.items).plan, x.b)));
+  const anyBudget = shown.some((x) => x.b);
   const ul = h('ul', { class: 'roombars' });
-  const empty = rows.filter((x) => !x.items.length).map((x) => x.r.namn);
-  for (const { r, items } of rows.filter((x) => x.items.length)) {
+  const empty = rows.filter((x) => !x.items.length && !x.b).map((x) => x.r.namn);
+  for (const { r, items, b } of shown) {
     const t = totals(items);
+    const over = b > 0 && t.plan > b;
     const pressed = S.filt.rum.has(r.id);
     const track = h('span', { class: 'rb-track', 'aria-hidden': 'true' });
     if (t.kopt > 0) track.append(h('span', { class: 'seg kopt', style: { flex: `0 1 ${pct(t.kopt, max)}%` } }));
     if (t.vald > 0) track.append(h('span', { class: 'seg plan', style: { flex: `0 1 ${pct(t.vald, max)}%` } }));
     if (!t.plan) track.append(h('span', { class: 'base' }));
+    if (b) track.prepend(h('span', { class: 'rb-cap', style: { width: pct(b, max) + '%' } }));   // rummets budget som ljus yta
+    if (over) track.append(h('span', { class: 'rb-mark', style: { left: `calc(${pct(b, max)}% - 1px)` } }));
     const sub = [];
     if (items.length) sub.push(`${items.length} st`);
     if (t.ideN) sub.push(`${t.ideN} ${t.ideN === 1 ? 'idé' : 'idéer'}`);
+    if (b && !over) sub.push(`${kr(b - t.plan)} kvar`);
+    const val = b
+      ? h('span', { class: 'rb-val' + (over ? ' over' : '') }, NF.format(Math.round(t.plan)), h('small', null, ` av ${kr(b)}`))
+      : h('span', { class: 'rb-val' + (t.plan ? '' : ' zero') }, t.plan ? kr(t.plan) : '0 kr');
     ul.append(h('li', null, h('button', {
       class: 'roombar', type: 'button', 'aria-pressed': pressed ? 'true' : 'false',
       onclick: () => { setRoomFilter(pressed ? [] : [r.id]); scrollToList(); },
     },
       h('span', { class: 'rb-name' }, r.namn),
-      h('span', { class: 'rb-val' + (t.plan ? '' : ' zero') }, t.plan ? kr(t.plan) : '0 kr'),
+      val,
       track,
-      sub.length ? h('span', { class: 'rb-sub' }, sub.join(', ')) : null)));
+      sub.length || over ? h('span', { class: 'rb-sub' }, sub.join(', '),
+        over ? h('b', { class: 'rb-over' }, `${sub.length ? ', ' : ''}${kr(t.plan - b)} över`) : null) : null)));
   }
   return h('section', { class: 'panel', 'aria-label': 'Per rum' },
     h('div', { class: 'panel-head' }, h('h2', null, 'Per rum'),
       h('ul', { class: 'legend inline' },
         h('li', null, h('i', { class: 'sw kopt', 'aria-hidden': 'true' }), 'Köpt'),
-        h('li', null, h('i', { class: 'sw plan', 'aria-hidden': 'true' }), 'Att köpa'))),
+        h('li', null, h('i', { class: 'sw plan', 'aria-hidden': 'true' }), 'Att köpa'),
+        anyBudget ? h('li', null, h('i', { class: 'sw rest', 'aria-hidden': 'true' }), 'Budget') : null)),
     ul,
     empty.length ? h('p', { class: 'rb-empty' }, `Inget än i ${listSv(empty)}.`) : null);
 }
@@ -776,6 +932,114 @@ function refreshLikes(kind, obj, pop) {
     if (nb) b.replaceWith(nb);
   });
   if (pop) document.querySelectorAll(`[data-like="${kind}:${CSS.escape(obj.id)}"]`).forEach((b) => b.classList.add('pop'));
+}
+
+// ---- budget
+
+function budgetFailed() {
+  return h('div', { class: 'panel empty' },
+    h('p', null, 'Budgeten gick inte att hämta just nu.'),
+    h('button', { class: 'btn', type: 'button', onclick: () => load() }, 'Försök igen'));
+}
+
+function renderBudget() {
+  const root = $('#view-budget');
+  if (!S.data) { root.replaceChildren(S.loadErr ? loadFailed() : skeleton()); return; }
+  if (!S.budget) { root.replaceChildren(S.budgetErr ? budgetFailed() : skeleton()); return; }
+  const d = S.data;
+  const bt = budgetTotals(d);
+  const t = totals(d.mobler);
+  const sh = shares(d.mobler);
+  const v = verdict(bt, t, sh);
+
+  const summary = h('section', { class: 'panel bud-sum', 'aria-label': 'Er budget' },
+    h('div', { class: 'panel-head' }, h('h2', null, 'Er budget'),
+      S.key ? h('button', { class: 'btn btn-primary btn-sm', type: 'button', onclick: openMyBudget }, icon('pencil-simple'), 'Fyll i din budget') : null),
+    bt.total ? budgetTable(bt, t, sh)
+      : h('p', { class: 'sheet-lead' }, 'Sätt vad ni var och en vill lägga på varje rum. Då ser ni både tillsammans och var för sig om ni har råd med det ni valt.'),
+    v ? h('p', { class: 'verdict' + (v.bad ? ' bad' : '') }, icon(v.bad ? 'warning-circle' : 'check'), h('span', null, v.text)) : null,
+    h('p', { class: 'help' }, 'Bara valda och köpta möbler räknas. Ett delat köp delas som ni delat rummets budget, och lika i rum utan budget.'));
+
+  const rooms = d.rum.map((r) => ({ r, items: d.mobler.filter((m) => m.rum === r.id) }));
+  const full = rooms.filter((x) => x.items.length || hasBudget(x.r.id));
+  const bare = rooms.filter((x) => !x.items.length && !hasBudget(x.r.id));
+  const bareBox = bare.length ? h('div', { class: 'bud-bare' },
+    h('p', null, full.length ? 'Ingen budget och inga möbler än:' : 'Rummen:'),
+    h('div', { class: 'chipset' }, bare.map((x) => (S.key
+      ? h('button', { class: 'chip', type: 'button', onclick: () => openRoomBudget(x.r.id), 'aria-label': `Sätt budget för ${x.r.namn}` }, icon('plus'), x.r.namn)
+      : h('span', { class: 'chip static' }, x.r.namn))))) : null;
+
+  root.replaceChildren(h('div', { class: 'bud-grid' }, summary,
+    h('section', { class: 'bud-rooms', 'aria-label': 'Per rum' },
+      h('div', { class: 'list-head' }, h('h2', null, 'Per rum')),
+      full.length ? h('div', { class: 'bud-cards' }, full.map((x) => budgetCard(d, x.r, x.items))) : null,
+      bareBox)));
+}
+
+function budgetTable(bt, t, sh) {
+  const row = (name, b, used, cls) => {
+    const left = Math.round(b) - Math.round(used);
+    return h('tr', { class: cls || null },
+      h('th', { scope: 'row' }, name),
+      h('td', null, NF.format(Math.round(b))),
+      h('td', null, NF.format(Math.round(used))),
+      h('td', { class: left < 0 ? 'neg' : null }, NF.format(left)));
+  };
+  return h('table', { class: 'bud-table' },
+    h('caption', { class: 'vh' }, 'Budget, valt och kvar per person, i kronor'),
+    h('thead', null, h('tr', null,
+      h('td', null), h('th', { scope: 'col' }, 'Budget'), h('th', { scope: 'col' }, 'Valt'), h('th', { scope: 'col' }, 'Kvar'))),
+    h('tbody', null,
+      Object.keys(PEOPLE).map((p) => row(PEOPLE[p], bt[p], sh[p])),
+      row('Tillsammans', bt.total, t.plan, 'sum')));
+}
+
+function partLine(name, t, belopp, rest) {
+  const over = t.plan > belopp + 0.5;
+  return h('li', { class: (over ? 'over' : '') + (rest ? ' rest' : '') || null },
+    h('span', { class: 'pl-name' }, name),
+    h('span', { class: 'pl-val' }, NF.format(Math.round(t.plan)), h('small', null, ` av ${kr(belopp)}`)));
+}
+
+function budgetCard(d, r, items) {
+  const b = roomBud(r.id);
+  const t = totals(items);
+  const over = b.total > 0 && t.plan > b.total;
+  const scale = Math.max(b.total, t.plan, 1);
+  const segs = [];
+  if (t.kopt > 0) segs.push(h('span', { class: 'seg kopt', style: { flexBasis: pct(t.kopt, scale) + '%' } }));
+  if (t.vald > 0) segs.push(h('span', { class: 'seg plan', style: { flexBasis: pct(t.vald, scale) + '%' } }));
+  segs.push(h('span', { class: 'seg rest' }));
+  const meter = h('div', { class: 'meter-wrap slim' },
+    h('div', { class: 'meter', role: 'img', 'aria-label': `${r.namn}: köpt ${kr(t.kopt)}, att köpa ${kr(t.vald)}` + (b.total ? `, budget ${kr(b.total)}` : '') }, segs),
+    over ? h('div', { class: 'budget-mark', style: { left: `calc(${pct(b.total, scale)}% - 1px)` } }) : null);
+
+  let status;
+  if (!b.total) status = h('p', { class: 'bc-status muted' }, t.plan ? `${kr(t.plan)} valt, ingen budget satt` : 'Ingen budget satt');
+  else if (over) status = h('p', { class: 'bc-status over' }, `${kr(t.plan)} valt, `, h('b', null, `${kr(t.plan - b.total)} över`));
+  else status = h('p', { class: 'bc-status' }, `${kr(t.plan)} valt, ${kr(b.total - t.plan)} kvar`);
+
+  const sh = shares(items);
+  const who2 = Object.keys(PEOPLE).filter((p) => b[p] > 0 || sh[p] >= 0.5);   // den som varken lagt något eller har en del här visas inte
+  const people = b.total ? h('ul', { class: 'bc-people' }, who2.map((p) => {
+    const o = sh[p] > b[p] + 0.5;
+    return h('li', { class: o ? 'over' : null }, h('span', null, PEOPLE[p]),
+      h('span', { class: 'pl-val' }, NF.format(Math.round(sh[p])), h('small', null, ` av ${kr(b[p])}`)));
+  })) : null;
+
+  const pv = b.delar.length ? partsView(d, r.id) : null;
+  const parts = pv ? h('ul', { class: 'bc-parts', 'aria-label': 'Delar' },
+    pv.parts.map((p, i) => partLine(p.namn || `Del ${i + 1}`, p.t, p.belopp)),
+    partLine('Resten av rummet', pv.rest.t, pv.rest.belopp, true)) : null;
+  const partsWarn = pv && pv.fordelat > b.total
+    ? h('p', { class: 'bc-warn' }, icon('warning-circle'), `Delarna är ${kr(pv.fordelat - b.total)} mer än rummets budget.`) : null;
+  const ideas = t.ideN ? h('p', { class: 'bc-ide' }, `${t.ideN} ${t.ideN === 1 ? 'idé' : 'idéer'} för ${kr(t.ide)} räknas inte med.`) : null;
+
+  return h('article', { class: 'panel bcard' + (over ? ' over' : ''), 'aria-label': r.namn },
+    h('div', { class: 'bc-head' },
+      h('div', null, h('h3', null, r.namn), h('p', { class: 'bc-total' }, b.total ? kr(b.total) : '')),
+      S.key ? h('button', { class: 'btn btn-sm', type: 'button', onclick: () => openRoomBudget(r.id), 'aria-label': `Ändra budgeten för ${r.namn}` }, icon('pencil-simple'), 'Ändra') : null),
+    meter, status, people, parts, partsWarn, ideas);
 }
 
 // ---- moodboard
@@ -1188,30 +1452,199 @@ function openImage(id) {
     { onPaste: pic.onPaste, focus: false });
 }
 
-// ---- budget
+// ---- budget: ändra
 
-function openBudget() {
+function amountInput(v, label) {
+  return h('input', { class: 'in amt', type: 'text', inputmode: 'numeric', value: v ? NF.format(v) : '', placeholder: '0', autocomplete: 'off', 'aria-label': label });
+}
+
+// "Fyll i din budget": ditt belopp för alla rum på en gång. Sparar bara det du ändrat,
+// så att det som den andra sparat under tiden ligger kvar.
+function openMyBudget() {
   if (!guardEdit()) return;
   const d = S.data;
-  const inp = h('input', { class: 'in', type: 'text', inputmode: 'numeric', value: d.budget ? NF.format(d.budget) : '', placeholder: 'Till exempel 60 000', autocomplete: 'off' });
-  const f = field('Total budget för möbler (kr)', inp, { help: 'Lämna tomt om ni inte vill ha någon budget.' });
+  const me = S.me;
+  const other = me === 'emily' ? 'rasmus' : 'emily';
+  const rows = d.rum.map((r) => {
+    const init = roomBud(r.id)[me];
+    return { r, init, inp: amountInput(init, `${r.namn}, ditt belopp i kronor`) };
+  });
+  const sumEl = h('b');
+  const err = h('p', { class: 'err', hidden: true, role: 'alert' });
+  const recalc = () => {
+    let s = 0;
+    for (const x of rows) { const v = parseKr(x.inp.value); if (v && !Number.isNaN(v)) s += v; }
+    sumEl.textContent = kr(s);
+  };
+  rows.forEach((x) => x.inp.addEventListener('input', recalc));
+  recalc();
+
   const saveBtn = h('button', { class: 'btn btn-primary', type: 'button' }, 'Spara');
-  const formErr = h('p', { class: 'err', hidden: true, role: 'alert' });
-  const save = async () => {
-    const v = parseKr(inp.value);
-    if (Number.isNaN(v)) { f.setErr('Skriv ett belopp, till exempel 60 000.'); return; }
+  saveBtn.addEventListener('click', async () => {
+    err.hidden = true;
+    const changed = [];
+    for (const x of rows) {
+      x.inp.setAttribute('aria-invalid', 'false');
+      const v = parseKr(x.inp.value);
+      if (Number.isNaN(v)) {
+        x.inp.setAttribute('aria-invalid', 'true');
+        err.textContent = `Skriv ett belopp för ${x.r.namn}, till exempel 5 000.`;
+        err.hidden = false; x.inp.focus(); return;
+      }
+      if ((v || 0) !== x.init) changed.push([x.r.id, v || 0]);
+    }
+    if (!changed.length) { closeDialog(); return; }
     setBusyButton(saveBtn, true); dlgBusy = true;
     try {
-      await commit((dd) => { dd.budget = v || 0; }, `${who()}: budget ${v ? kr(v) : 'borttagen'}`);
-      dlgBusy = false; closeDialog(); toast('Budgeten är sparad');
+      await commitBudget((bb) => {
+        for (const [rid, v] of changed) {
+          const e = bb.rum[rid] || (bb.rum[rid] = { rasmus: 0, emily: 0, delar: [] });
+          e[me] = v;
+          if (!e.rasmus && !e.emily && !e.delar.length) delete bb.rum[rid];
+        }
+      }, `${who()}: sin budget för ${changed.map(([rid]) => roomName(d, rid)).join(', ')}`);
+      dlgBusy = false; closeDialog(); toast('Din budget är sparad');
     } catch (e) {
       dlgBusy = false; setBusyButton(saveBtn, false);
-      formErr.textContent = errText(e); formErr.hidden = false;
+      err.textContent = errText(e); err.hidden = false;
     }
+  });
+
+  const list = h('div', { class: 'mb-list' }, rows.map((x) => {
+    const o = roomBud(x.r.id)[other];
+    x.inp.id = newId('f');
+    return h('div', { class: 'mb-row' },
+      h('label', { for: x.inp.id }, h('span', null, x.r.namn), o ? h('small', null, `${PEOPLE[other]} lägger ${kr(o)}`) : null),
+      x.inp);
+  }));
+  openDialog(`Din budget, ${PEOPLE[me]}`, [
+    h('p', { class: 'sheet-lead' }, `Hur mycket vill du lägga på varje rum? Lämna tomt där du inte vill lägga något. ${PEOPLE[other]} fyller i sin del på samma sätt.`),
+    list,
+    h('p', { class: 'mb-sum' }, h('span', null, 'Din budget totalt'), sumEl),
+    err,
+  ], [h('span', { class: 'spacer' }), h('button', { class: 'btn', type: 'button', onclick: closeDialog }, 'Avbryt'), saveBtn],
+  { focus: rows[0] ? rows[0].inp : false });
+}
+
+// Ett rum: båda beloppen och delarna, och vilken del varje möbel hör till.
+function openRoomBudget(rid) {
+  if (!guardEdit()) return;
+  const d = S.data;
+  const room = d.rum.find((r) => r.id === rid);
+  if (!room) return;
+  const b0 = roomBud(rid);
+  const items = d.mobler.filter((m) => m.rum === rid)
+    .sort((a, b) => (STATUS_ORDER[a.status] - STATUS_ORDER[b.status]) || a.namn.localeCompare(b.namn, 'sv'));
+  const itemIds = new Set(items.map((m) => m.id));
+  const tidy = (list) => list.map((p) => normPart({ ...p, mobler: p.mobler.filter((id) => itemIds.has(id)) }));
+  const initParts = JSON.stringify(tidy(b0.delar));
+  const parts = tidy(b0.delar);
+
+  const inR = amountInput(b0.rasmus, 'Rasmus belopp i kronor');
+  const inE = amountInput(b0.emily, 'Emily belopp i kronor');
+  const fR = field('Rasmus (kr)', inR);
+  const fE = field('Emily (kr)', inE);
+  const val = (inp) => { const v = parseKr(inp.value); return v && !Number.isNaN(v) ? v : 0; };
+  const partsBox = h('div', { class: 'parts' });
+  const linkBox = h('div', { class: 'links' });
+  const sumLine = h('p', { class: 'help parts-sum' });
+
+  const drawSum = () => {
+    const total = val(inR) + val(inE);
+    const f = parts.reduce((s, p) => s + (p._in ? val(p._in) : p.belopp), 0);
+    sumLine.classList.toggle('warn-over', !!parts.length && f > total);
+    if (!parts.length) sumLine.textContent = total ? `Rummets budget: ${kr(total)}.` : '';
+    else if (f > total) sumLine.textContent = `Delarna är ${kr(f - total)} mer än rummets budget på ${kr(total)}.`;
+    else sumLine.textContent = `Fördelat ${kr(f)} av ${kr(total)}. Resten av rummet: ${kr(total - f)}.`;
   };
-  saveBtn.addEventListener('click', save);
-  inp.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); save(); } });
-  openDialog('Budget', [f.el, formErr], [h('span', { class: 'spacer' }), h('button', { class: 'btn', type: 'button', onclick: closeDialog }, 'Avbryt'), saveBtn], { focus: inp });
+  const drawLinks = () => {
+    if (!parts.length || !items.length) { linkBox.replaceChildren(); return; }
+    linkBox.replaceChildren(
+      h('p', { class: 'flabel' }, 'Vilken del hör möblerna till?'),
+      ...items.map((m) => {
+        const cur = parts.find((p) => p.mobler.includes(m.id));
+        const sel = h('select', { class: 'in', 'aria-label': `Del för ${m.namn}` },
+          h('option', { value: '', selected: !cur }, 'Resten av rummet'),
+          parts.map((p, i) => h('option', { value: p.id, selected: cur === p }, p.namn.trim() || `Del ${i + 1}`)));
+        sel.addEventListener('change', () => {
+          for (const p of parts) p.mobler = p.mobler.filter((x) => x !== m.id);
+          const p = parts.find((x) => x.id === sel.value);
+          if (p) p.mobler.push(m.id);
+        });
+        const price = m.pris == null ? 'pris saknas' : kr(lineTotal(m), m.ca);
+        return h('div', { class: 'link-row' },
+          h('span', { class: 'lr-name' }, m.namn, h('small', null, `${price}, ${STATUS[m.status].toLowerCase()}`)),
+          sel);
+      }));
+  };
+  const drawParts = (focusLast) => {
+    partsBox.replaceChildren(...parts.map((p, i) => {
+      const nameIn = h('input', { class: 'in', type: 'text', maxlength: '80', value: p.namn, placeholder: 'Till exempel skrivbord', 'aria-label': `Del ${i + 1}, vad`, autocomplete: 'off' });
+      nameIn.addEventListener('input', () => { p.namn = nameIn.value; });
+      nameIn.addEventListener('change', drawLinks);
+      const amtIn = amountInput(p.belopp, `Del ${i + 1}, belopp i kronor`);
+      if (p._raw != null) amtIn.value = p._raw;   // det som skrivits står kvar när rutan ritas om
+      amtIn.addEventListener('input', () => { p._raw = amtIn.value; p.belopp = val(amtIn); drawSum(); });
+      p._name = nameIn; p._in = amtIn;
+      const del = h('button', { class: 'icon-btn', type: 'button', 'aria-label': `Ta bort delen ${p.namn || i + 1}`,
+        onclick: () => { parts.splice(i, 1); drawParts(); drawLinks(); drawSum(); } }, icon('trash'));
+      return h('div', { class: 'part-row' }, nameIn, amtIn, del);
+    }));
+    if (focusLast) { const last = partsBox.querySelector('.part-row:last-child input'); if (last) last.focus(); }
+  };
+  const addBtn = h('button', { class: 'btn btn-sm', type: 'button', onclick: () => {
+    parts.push({ id: newId('d'), namn: '', belopp: 0, mobler: [] });
+    drawParts(true); drawLinks(); drawSum();
+  } }, icon('plus'), 'Lägg till del');
+  inR.addEventListener('input', drawSum);
+  inE.addEventListener('input', drawSum);
+  drawParts(); drawLinks(); drawSum();
+
+  const saveBtn = h('button', { class: 'btn btn-primary', type: 'button' }, 'Spara');
+  const formErr = h('p', { class: 'err', hidden: true, role: 'alert' });
+  saveBtn.addEventListener('click', async () => {
+    formErr.hidden = true; fR.setErr(''); fE.setErr('');
+    const r = parseKr(inR.value);
+    if (Number.isNaN(r)) { fR.setErr('Skriv ett belopp, till exempel 5 000.'); return; }
+    const e = parseKr(inE.value);
+    if (Number.isNaN(e)) { fE.setErr('Skriv ett belopp, till exempel 5 000.'); return; }
+    const clean = [];
+    for (const p of parts) {
+      const v = parseKr(p._in ? p._in.value : p.belopp);
+      if (Number.isNaN(v)) { formErr.textContent = 'Beloppen för delarna ska vara siffror.'; formErr.hidden = false; if (p._in) p._in.focus(); return; }
+      const namn = p.namn.trim();
+      if (!namn && !v && !p.mobler.length) continue;   // en tom rad sparas inte
+      if (!namn) { formErr.textContent = 'Skriv vad varje del är.'; formErr.hidden = false; if (p._name) p._name.focus(); return; }
+      clean.push(normPart({ id: p.id, namn, belopp: v || 0, mobler: p.mobler }));
+    }
+    const nr = r || 0, ne = e || 0;
+    const partsChanged = JSON.stringify(clean) !== initParts;
+    if (nr === b0.rasmus && ne === b0.emily && !partsChanged) { closeDialog(); return; }
+    setBusyButton(saveBtn, true); dlgBusy = true;
+    try {
+      await commitBudget((bb) => {
+        const x = bb.rum[rid] || (bb.rum[rid] = { rasmus: 0, emily: 0, delar: [] });
+        if (nr !== b0.rasmus) x.rasmus = nr;       // bara det som ändrats skrivs,
+        if (ne !== b0.emily) x.emily = ne;         // så att den andras ändring står kvar
+        if (partsChanged) x.delar = clean;
+        if (!x.rasmus && !x.emily && !x.delar.length) delete bb.rum[rid];
+      }, `${who()}: budget för ${room.namn}`);
+      dlgBusy = false; closeDialog(); toast(`Budgeten för ${room.namn} är sparad`);
+    } catch (err) {
+      dlgBusy = false; setBusyButton(saveBtn, false);
+      formErr.textContent = errText(err); formErr.hidden = false;
+    }
+  });
+
+  openDialog(`Budget för ${room.namn}`, [
+    h('p', { class: 'sheet-lead' }, 'Hur mycket lägger ni var på rummet?'),
+    h('div', { class: 'row' }, fR.el, fE.el),
+    h('div', { class: 'field' }, h('span', { class: 'flabel' }, 'Fördela på delar'),
+      h('p', { class: 'help' }, 'Valfritt. Dela upp rummets budget på det ni ska köpa, till exempel skrivbord och kontorsstol.'),
+      partsBox, h('div', null, addBtn), sumLine),
+    linkBox,
+    formErr,
+  ], [h('span', { class: 'spacer' }), h('button', { class: 'btn', type: 'button', onclick: closeDialog }, 'Avbryt'), saveBtn], { focus: inR });
 }
 
 // ---- lås upp, vem är du
@@ -1275,12 +1708,14 @@ function openWho() {
 
 function openSettings() {
   const d = S.data;
+  const bt = d && S.budget ? budgetTotals(d) : null;
   const me = radios('jag3', PEOPLE, S.me || '');
   me.el.addEventListener('change', () => { if (me.value) { S.me = me.value; store.set(ME_STORE, S.me); renderTop(); } });
 
   const rows = h('div', { class: 'field' });
   const draft = (d ? d.rum : DEFAULT_ROOMS).map((r) => ({ ...r }));
-  const used = new Set([...(d ? d.mobler.map((m) => m.rum) : []), ...(d ? d.moodboard.map((b) => b.rum) : [])]);
+  const used = new Set([...(d ? d.mobler.map((m) => m.rum) : []), ...(d ? d.moodboard.map((b) => b.rum) : []),
+    ...(d ? d.rum.filter((r) => hasBudget(r.id)).map((r) => r.id) : [])]);
   const drawRooms = () => {
     rows.replaceChildren(...draft.map((r, i) => {
       const nameIn = h('input', { class: 'in', type: 'text', value: r.namn, 'aria-label': 'Rummets namn' });
@@ -1289,7 +1724,7 @@ function openSettings() {
         Object.entries(ZONES).map(([z, lab]) => h('option', { value: z, selected: r.zon === z }, lab)));
       zonSel.addEventListener('change', () => { r.zon = zonSel.value; });
       const del = h('button', { class: 'icon-btn', type: 'button', 'aria-label': `Ta bort ${r.namn}`, disabled: used.has(r.id) ? true : null,
-        title: used.has(r.id) ? 'Rummet har möbler eller bilder' : null, onclick: () => { draft.splice(i, 1); drawRooms(); } }, icon('trash'));
+        title: used.has(r.id) ? 'Rummet har möbler, bilder eller budget' : null, onclick: () => { draft.splice(i, 1); drawRooms(); } }, icon('trash'));
       return h('div', { class: 'room-row' }, nameIn, zonSel, del);
     }));
   };
@@ -1348,10 +1783,10 @@ function openSettings() {
   openDialog('Inställningar', [
     h('div', { class: 'settings-sec' }, h('h3', null, 'Du är'), me.el),
     h('div', { class: 'settings-sec' }, h('h3', null, 'Budget'),
-      h('p', { class: 'sheet-lead' }, d && d.budget ? `Budgeten är ${kr(d.budget)}.` : 'Ingen budget satt.'),
-      h('div', null, h('button', { class: 'btn btn-sm', type: 'button', onclick: openBudget }, icon('pencil-simple'), 'Ändra budget'))),
+      h('p', { class: 'sheet-lead' }, bt && bt.total ? `Er budget är ${kr(bt.total)}: Rasmus ${kr(bt.rasmus)}, Emily ${kr(bt.emily)}.` : 'Ingen budget satt.'),
+      h('div', null, h('a', { class: 'btn btn-sm', href: '#budget', onclick: () => closeDialog() }, icon('wallet'), 'Till budgeten'))),
     h('div', { class: 'settings-sec' }, h('h3', null, 'Rum'),
-      h('p', { class: 'help' }, 'Platsen på ritningen styr vilka rum som visas när man trycker på ritningen. Rum med möbler eller bilder går inte att ta bort.'),
+      h('p', { class: 'help' }, 'Platsen på ritningen styr vilka rum som visas när man trycker på ritningen. Rum med möbler, bilder eller budget går inte att ta bort.'),
       rows, h('div', { class: 'imgbtns' }, addRoom, saveRooms), roomErr),
     h('div', { class: 'settings-sec' }, h('h3', null, 'Dela'),
       h('p', { class: 'help' }, 'Skapar en länk som låser upp sidan på den andras telefon.'),
