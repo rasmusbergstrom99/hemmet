@@ -308,32 +308,6 @@
    "av": "Rasmus",
    "skapad": "2026-09-28T07:37:21.000Z",
    "andrad": "2026-09-28T07:37:21.000Z"
-  },
-  {
-   "id": "mmul33u7l08zv",
-   "namn": "KRONÖREN sängbord, furu",
-   "rum": "sovrum",
-   "status": "ide",
-   "pris": 199,
-   "antal": 1,
-   "ca": false,
-   "lank": "https://www.ikea.com/se/sv/p/kronoeren-saengbord-furu-00610807/",
-   "bild": "",
-   "bildSha": "",
-   "matt": {
-    "b": 39,
-    "d": 32,
-    "h": 55
-   },
-   "betalar": "delat",
-   "not": "Ljust sängbord i obehandlad furu. Mät platsen bredvid er säng före köp; priset kontrollerades 28 september 2026.",
-   "gillar": {
-    "rasmus": false,
-    "emily": false
-   },
-   "av": "Rasmus",
-   "skapad": "2026-09-28T10:08:07.857Z",
-   "andrad": "2026-09-28T10:08:07.857Z"
   }
  ],
  "moodboard": [
@@ -377,5 +351,5 @@
    "skapad": "2026-09-27T20:11:44.385Z"
   }
  ],
- "andrad": "2026-09-28T10:08:08.718Z"
+ "andrad": "2026-09-28T10:08:27.858Z"
 }
