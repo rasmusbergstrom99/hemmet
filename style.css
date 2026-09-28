@@ -559,3 +559,23 @@ input.in[aria-invalid="true"] { border-color: var(--danger); }
   .like:hover:not(:disabled) { background: var(--sunk); }
   .link-btn:hover { background: var(--sunk); }
 }
+
+/* ChatGPT */
+.chat-entry { flex-shrink: 0; }
+@media (max-width: 899px) {
+  .top { flex-wrap: wrap; }
+  .top .brand { flex-basis: calc(100% - 140px); }
+  .chat-entry { margin-right: calc(100% - 110px); }
+}
+.chat-group, .chat-preview { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; min-width: 0; }
+.chat-group h3 { font-size: 16px; }
+.chat-group h4 { margin: 0; font-size: 14px; }
+.chat-group .help { font-size: 14px; color: var(--ink-2); }
+.chat-group .warn-over { color: var(--danger); }
+.chat-row { min-width: 0; padding: 10px 0; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+.chat-row p { margin-top: 4px; }
+.chat-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 4px; font-size: 14px; }
+.chat-image { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 12px; }
+.chat-thumb img { display: block; width: 72px; height: 72px; object-fit: cover; border-radius: 8px; }
+.chat-thumb { font-size: 12px; }
+.chat-count { font-weight: 600; }

@@ -603,6 +603,7 @@ function render() {
 function renderTop() {
   const box = $('#top-actions');
   if (!box) return;
+  $('#chatgpt').hidden = !S.key;
   const kids = [];
   if (S.busy > 0) kids.push(h('span', { class: 'busy-pill' }, 'Sparar'));
   if (S.key) {
@@ -1648,6 +1649,257 @@ function openRoomBudget(rid) {
   ], [h('span', { class: 'spacer' }), h('button', { class: 'btn', type: 'button', onclick: closeDialog }, 'Avbryt'), saveBtn], { focus: inR });
 }
 
+// ---------------------------------------------------------------- ChatGPT
+
+// Ren validering: varken DOM, tid, slump eller skrivningar. Identitet och datum sätts vid spara.
+function chatName(value) {
+  return String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+function chatHttps(value) {
+  const url = safeUrl(value);
+  return url && url.startsWith('https:') ? url : '';
+}
+function chatAmount(value) {
+  const n = typeof value === 'number' ? value : typeof value === 'string' ? parseKr(value) : null;
+  return n != null && Number.isFinite(n) && n >= 0 ? Math.round(n) : null;
+}
+function chatDuplicate(items, item) {
+  return items.some((m) => m.rum === item.rum && chatName(m.namn) === chatName(item.namn));
+}
+function parseChatGPT(text, data) {
+  const out = { mobler: [], moodboard: [], budget: [], skipped: [], error: '' };
+  if (!text.trim()) return out;
+  const unreadable = 'Koden gick inte att läsa. Be ChatGPT skriva den igen, hela.';
+  const block = text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1);
+  let src;
+  try { src = JSON.parse(block); }
+  catch {
+    try { src = JSON.parse(block.replace(/[“”‘’„]/g, '"')); }
+    catch { out.error = unreadable; return out; }
+  }
+  if (!src || typeof src !== 'object' || Array.isArray(src)) { out.error = unreadable; return out; }
+  if ('vartHem' in src && src.vartHem !== 1) { out.error = 'Koden har en annan version. Be ChatGPT skriva den igen för Vårt hem 1.'; return out; }
+  let count = 0;
+  for (const kind of ['mobler', 'moodboard', 'budget']) {
+    if (src[kind] === undefined) continue;
+    if (!Array.isArray(src[kind])) { out.skipped.push(`${kind}: ska vara en lista`); continue; }
+    for (const [i, entry] of src[kind].entries()) {
+      const v = entry && typeof entry === 'object' && !Array.isArray(entry) ? entry : {};
+      const label = typeof v.namn === 'string' && v.namn.trim() ? v.namn.trim() : `${kind === 'mobler' ? 'Möbel' : kind === 'moodboard' ? 'Bild' : 'Budget'} ${i + 1}`;
+      const skip = (reason) => out.skipped.push(`${label}: ${reason}`);
+      if (count >= 20) { skip('Högst 20 åt gången'); continue; }
+      const room = data.rum.find((r) => chatName(v.rum) && (chatName(r.id) === chatName(v.rum) || chatName(r.namn) === chatName(v.rum)));
+      if (!room) { skip(`okänt rum "${String(v.rum ?? '')}"`); continue; }
+      if (kind === 'mobler') {
+        if (typeof v.namn !== 'string' || !v.namn.trim()) { skip('namn saknas'); continue; }
+        const namn = v.namn.trim().slice(0, 200);
+        if (chatDuplicate([...data.mobler, ...out.mobler], { namn, rum: room.id })) { skip('Finns redan'); continue; }
+        let status = new Map([['ide', 'ide'], ['idea', 'ide'], ['vald', 'vald'], ['kopt', 'kopt']]).get(chatName(v.status));
+        // Utelämnat fält ger standardvärdet i tysthet; bara ett fält som finns men är fel varnar.
+        const given = (x) => x != null && x !== '';
+        if (!status) { status = 'ide'; if (given(v.status)) skip('status blev idé'); }
+        const betalar = ['delat', 'emily', 'rasmus'].includes(v.betalar) ? v.betalar : 'delat';
+        if (given(v.betalar) && betalar !== v.betalar) skip('betalar blev delat');
+        const urls = {};
+        for (const key of ['lank', 'bild']) {
+          urls[key] = v[key] ? chatHttps(v[key]) : '';
+          if (v[key] && !urls[key]) skip('länken togs bort');
+        }
+        const pris = typeof v.pris === 'number' && Number.isFinite(v.pris) && v.pris >= 0 ? v.pris : chatAmount(v.pris);
+        if (pris === null && v.pris != null && v.pris !== '') skip('priset saknas');
+        const antal = Number.isInteger(v.antal) && v.antal >= 1 ? v.antal : 1;
+        const matt = {};
+        for (const key of ['b', 'd', 'h']) {
+          const value = v.matt?.[key];
+          const n = typeof value === 'number' ? value : typeof value === 'string' ? parseCm(value) : null;
+          matt[key] = Number.isFinite(n) && n > 0 ? n : null;
+        }
+        out.mobler.push(normItem({ namn, rum: room.id, status, pris, antal, ca: v.ca === true,
+          ...urls, matt, betalar, not: typeof v.not === 'string' ? v.not : '', id: '' }));
+      } else if (kind === 'moodboard') {
+        const bild = chatHttps(v.bild);
+        if (!bild) { skip('bilden behöver en https-länk'); continue; }
+        out.moodboard.push(normImg({ id: '', rum: room.id, bild, text: typeof v.text === 'string' ? v.text : '' }));
+      } else {
+        const mitt = chatAmount(v.mitt_belopp);
+        if ('mitt_belopp' in v && mitt === null) skip('ditt belopp gick inte att läsa');
+        const delar = [];
+        if ('delar' in v && !Array.isArray(v.delar)) skip('delarna ska vara en lista');
+        for (const p of Array.isArray(v.delar) ? v.delar : []) {
+          const namn = typeof p?.namn === 'string' ? p.namn.trim().slice(0, 80) : '';
+          const belopp = chatAmount(p?.belopp);
+          if (!namn || belopp === null) { skip('en del saknar namn eller belopp'); continue; }
+          const prev = delar.find((part) => chatName(part.namn) === chatName(namn));
+          if (prev) { skip(`delen ${namn} finns flera gånger`); continue; }
+          delar.push({ namn, belopp });
+        }
+        if (mitt === null && !delar.length) { skip('inget giltigt belopp eller någon giltig del'); continue; }
+        // En rad per rum gör förhandsvisningen entydig, även vid upprepat rum i koden.
+        if (out.budget.some((b) => b.rum === room.id)) { skip('budgeten för rummet finns flera gånger'); continue; }
+        out.budget.push({ rum: room.id, ...(mitt !== null ? { mitt_belopp: mitt } : {}), delar });
+      }
+      count += 1;
+    }
+  }
+  return out;
+}
+
+function chatPrice(m) {
+  return m.pris == null ? 'pris saknas' : `${m.ca ? 'ca ' : ''}${m.antal > 1 ? `${m.antal} × ` : ''}${kr(m.pris)}`;
+}
+function chatNote(text) {
+  if (text.length <= 200) return text;
+  const cut = text.slice(0, 200);
+  return cut.replace(/\s+\S*$/, '').trimEnd() + '…';
+}
+function chatSummary(date = new Date()) {
+  const d = S.data || normalize({});
+  const stamp = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Stockholm', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  const bits = Object.fromEntries(stamp.formatToParts(date).map((p) => [p.type, p.value]));
+  const lines = [`Läget i Vårt hem, ${bits.day} ${bits.month.replace(/\.$/, '')} ${bits.year} kl. ${bits.hour}:${bits.minute}`, '',
+    `Rum (id): ${d.rum.map((r) => `${r.namn} (${r.id})`).join(', ')}.`, '',
+    'Budget per rum. Rummets budget är Rasmus och Emilys belopp tillsammans.'];
+  for (const r of d.rum) {
+    const items = d.mobler.filter((m) => m.rum === r.id), b = roomBud(r.id);
+    if (!items.length && !hasBudget(r.id)) continue;
+    const parts = partsView(d, r.id).parts.map((p) => `${p.namn} ${kr(p.belopp)}`);
+    lines.push(`- ${r.namn}: Rasmus ${kr(b.rasmus)}, Emily ${kr(b.emily)}, totalt ${kr(b.total)}. Valt ${kr(totals(items).plan)}.${parts.length ? ` Delar: ${parts.join(', ')}.` : ''}`);
+  }
+  const bt = budgetTotals(d);
+  lines.push(`Totalt: budget ${kr(bt.total)} (Rasmus ${NF.format(bt.rasmus)}, Emily ${NF.format(bt.emily)}). Valt och köpt ${kr(totals(d.mobler).plan)}.`, '', 'Möbler');
+  for (const r of d.rum) {
+    const items = d.mobler.filter((m) => m.rum === r.id);
+    if (!items.length) continue;
+    lines.push(r.namn);
+    for (const m of items) {
+      const dims = dimsText(m);
+      lines.push(`- ${m.namn}: ${STATUS[m.status].toLowerCase()}, ${chatPrice(m)}${dims ? `, ${dims}` : ''}.${safeUrl(m.lank) ? ` ${safeUrl(m.lank)}` : ''}`);
+      if (m.not) lines.push(`  Not: ${chatNote(m.not)}`);
+    }
+  }
+  const rooms = d.rum.map((r) => ({ namn: r.namn, n: d.moodboard.filter((b) => b.rum === r.id).length })).filter((r) => r.n);
+  lines.push('', `Moodboard: ${d.moodboard.length} ${d.moodboard.length === 1 ? 'bild' : 'bilder'}${rooms.length ? ` (${rooms.map((r) => `${r.namn} ${r.n}`).join(', ')})` : ''}.`);
+  return lines.join('\n');
+}
+function chatCount(draft) { return draft.mobler.length + draft.moodboard.length + draft.budget.length; }
+function chatCountText(draft) {
+  return listSv([
+    draft.mobler.length ? `${draft.mobler.length} ${draft.mobler.length === 1 ? 'möbel' : 'möbler'}` : '',
+    draft.moodboard.length ? `${draft.moodboard.length} ${draft.moodboard.length === 1 ? 'bild' : 'bilder'}` : '',
+    draft.budget.length ? `budget för ${draft.budget.length} rum` : '',
+  ].filter(Boolean));
+}
+function chatPreview(draft) {
+  const box = h('div', { class: 'chat-preview', 'aria-live': 'polite' });
+  if (draft.error) { box.append(h('p', { class: 'err', role: 'alert' }, draft.error)); return box; }
+  if (chatCount(draft)) box.append(h('p', { class: 'chat-count' }, `${chatCountText(draft)} läggs in.`));
+  const group = (title, rows) => { if (rows.length) box.append(h('section', { class: 'chat-group' }, h('h4', null, title), rows)); };
+  group('Möbler', draft.mobler.map((m) => h('div', { class: 'chat-row' },
+    h('strong', null, m.namn), h('div', { class: 'chat-meta' }, roomName(S.data, m.rum), statusChip(m.status)),
+    h('p', null, chatPrice(m)), dimsText(m) ? h('p', { class: 'help' }, dimsText(m)) : null)));
+  group('Moodboard', draft.moodboard.map((b) => {
+    const img = h('img', { src: b.bild, alt: '', referrerpolicy: 'no-referrer' });
+    img.addEventListener('error', () => img.replaceWith(h('span', { class: 'help' }, 'Bilden går inte att visa')), { once: true });
+    return h('div', { class: 'chat-row chat-image' }, h('div', { class: 'chat-thumb' }, img),
+      h('div', null, h('strong', null, roomName(S.data, b.rum)), b.text ? h('p', null, b.text) : null));
+  }));
+  group('Budget', draft.budget.map((b) => {
+    const cur = roomBud(b.rum), parts = cur.delar.map((p) => ({ ...p }));
+    const rows = [];
+    if (b.mitt_belopp !== undefined) rows.push(h('p', null, `Ditt belopp: ${kr(cur[S.me])} → ${kr(b.mitt_belopp)}`));
+    for (const p of b.delar) {
+      const old = parts.find((x) => chatName(x.namn) === chatName(p.namn));
+      rows.push(h('p', null, `${p.namn} ${kr(p.belopp)} (${old ? `var ${kr(old.belopp)}` : 'ny'})`));
+      if (old) old.belopp = p.belopp; else parts.push(p);
+    }
+    const total = cur.total - (cur[S.me] || 0) + (b.mitt_belopp ?? cur[S.me] ?? 0);
+    const sum = parts.reduce((s, p) => s + p.belopp, 0);
+    if (sum > total) rows.push(h('p', { class: 'help parts-sum warn-over' }, `Delarna är ${kr(sum - total)} mer än rummets budget på ${kr(total)}.`));
+    return h('div', { class: 'chat-row' }, h('strong', null, roomName(S.data, b.rum)), rows);
+  }));
+  group('Hoppas över eller ändras', draft.skipped.map((msg) => h('p', { class: 'help' }, msg)));
+  return box;
+}
+
+function openChatGPT() {
+  if (!S.data) return;
+  let draft = parseChatGPT('', S.data), saving = false, dataSaved = false;
+  const input = h('textarea', { class: 'in', id: 'chat-code', rows: 4, spellcheck: 'false' });
+  const preview = h('div');
+  const formErr = h('p', { class: 'err', hidden: true, role: 'alert' });
+  const save = h('button', { class: 'btn btn-primary', type: 'button', disabled: true }, 'Lägg in');
+  const draw = () => {
+    if (saving) return;
+    draft = parseChatGPT(input.value, S.data);
+    preview.replaceChildren(chatPreview(draft));
+    const count = chatCount(draft);
+    save.disabled = !count;
+    save.textContent = count ? `Lägg in ${count} ${count === 1 ? 'sak' : 'saker'}` : 'Lägg in';
+    formErr.hidden = true;
+  };
+  input.addEventListener('input', draw);
+  const fallback = h('div', { class: 'chat-group', hidden: true });
+  const copy = h('button', { class: 'btn', type: 'button', onclick: async () => {
+    const text = chatSummary();
+    try { await navigator.clipboard.writeText(text); toast('Kopierat. Klistra in i ChatGPT.'); }
+    catch {
+      const area = h('textarea', { class: 'in', readonly: true, rows: 5, 'aria-label': 'Läget att kopiera' }, text);
+      fallback.hidden = false;
+      fallback.replaceChildren(h('p', { class: 'help' }, 'Markera allt och kopiera.'), area);
+      area.focus(); area.select();
+    }
+  } }, icon('copy'), 'Kopiera läget');
+  const pasteHelp = h('p', { class: 'help', hidden: true, role: 'status' });
+  const paste = h('button', { class: 'btn', type: 'button', onclick: async () => {
+    try { const text = await navigator.clipboard.readText(); if (!saving) { input.value = text; draw(); pasteHelp.hidden = true; } }
+    catch { input.focus(); pasteHelp.textContent = 'Tryck länge i rutan och välj Klistra in.'; pasteHelp.hidden = false; }
+  } }, icon('clipboard-text'), 'Klistra in');
+  save.addEventListener('click', async () => {
+    if (!guardEdit() || saving || !chatCount(draft)) return;
+    const me = S.me, author = who(), now = nowIso();
+    const items = draft.mobler.map((m) => normItem({ ...m, id: newId('m'), av: author, skapad: now, andrad: now }));
+    const images = draft.moodboard.map((b) => normImg({ ...b, id: newId('i'), av: author, skapad: now }));
+    const budgets = draft.budget.map((b) => ({ ...b, delar: b.delar.map((p) => normPart({ ...p, id: newId('p'), mobler: [] })) }));
+    const summary = chatCountText(draft);
+    saving = true; dlgBusy = true; setBusyButton(save, true); input.disabled = true; paste.disabled = true; formErr.hidden = true;
+    try {
+      if (!dataSaved && (items.length || images.length)) {
+        await commit((d) => {
+          for (const m of items) if (!chatDuplicate(d.mobler, m)) d.mobler.push(m);
+          for (const b of images) if (!d.moodboard.some((old) => old.id === b.id)) d.moodboard.push(b);
+        }, `${author}: från ChatGPT, lade till ${[...items.map((m) => m.namn), ...images.map((b) => b.text || roomName(S.data, b.rum))].join(', ').slice(0, 120)}`);
+        dataSaved = true;
+      }
+      if (budgets.length) await commitBudget((bb) => {
+        for (const b of budgets) {
+          const cur = bb.rum[b.rum] || (bb.rum[b.rum] = { rasmus: 0, emily: 0, delar: [] });
+          if (b.mitt_belopp !== undefined) cur[me] = b.mitt_belopp;
+          for (const p of b.delar) {
+            const old = cur.delar.find((x) => chatName(x.namn) === chatName(p.namn));
+            if (old) old.belopp = p.belopp; else cur.delar.push({ ...p });
+          }
+        }
+      }, `${author}: budget från ChatGPT (${budgets.map((b) => roomName(S.data, b.rum)).join(', ')})`);
+      dlgBusy = false; closeDialog(); toast(`Inlagt: ${summary}`); render();
+    } catch (err) {
+      const saved = items.length && images.length ? 'Möblerna och bilderna är inlagda' : items.length ? 'Möblerna är inlagda' : 'Bilderna är inlagda';
+      formErr.textContent = dataSaved ? `${saved}, men budgeten sparades inte: ${errText(err)}` : errText(err);
+      formErr.hidden = false;
+      // Vid delvis lyckad import får man försöka med samma budget igen utan fler bilder.
+      input.disabled = dataSaved; paste.disabled = dataSaved;
+      saving = false; dlgBusy = false; setBusyButton(save, false);
+      if (dataSaved) save.textContent = 'Försök med budgeten igen';
+    }
+  });
+  openDialog('ChatGPT', [
+    h('section', { class: 'chat-group' }, h('h3', null, 'Ge ChatGPT läget'),
+      h('p', { class: 'help' }, 'Kopiera och klistra in i ChatGPT, så vet den vad ni redan har.'), h('div', null, copy), fallback),
+    h('section', { class: 'chat-group' }, h('h3', null, 'Lägg in från ChatGPT'),
+      h('p', { class: 'help' }, 'Klistra in koden du fick av ChatGPT.'), h('div', null, paste), pasteHelp,
+      field('Kod från ChatGPT', input).el, preview, formErr),
+  ], [h('span', { class: 'spacer' }), h('button', { class: 'btn', type: 'button', onclick: closeDialog }, 'Avbryt'), save], { focus: false });
+}
+
 // ---- lås upp, vem är du
 
 function openUnlock() {
@@ -1821,6 +2073,7 @@ function takeSetupLink() {
 }
 
 function boot() {
+  $('#chatgpt').addEventListener('click', openChatGPT);
   const d = dlg();
   d.addEventListener('cancel', (ev) => { if (dlgBusy) ev.preventDefault(); });
   d.addEventListener('click', (ev) => { if (ev.target === d) closeDialog(); });
