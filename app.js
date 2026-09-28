@@ -392,6 +392,7 @@ async function load(silent) {
   else S.budgetErr = true;
   S.loading = false;
   render();
+  openChatLink();
 }
 
 /* Varje ändring läser senaste versionen, gör ändringen och sparar med versionens sha.
@@ -2054,10 +2055,39 @@ function openSettings() {
 // ---------------------------------------------------------------- start
 
 function route() {
+  const chat = takeChatLink();
   const v = (location.hash || '').replace(/^#/, '');
   S.view = VIEWS.includes(v) ? v : 'kalkyl';
   render();
   window.scrollTo(0, 0);
+  if (chat) openChatLink();
+}
+
+/* Länken som ChatGPT-projektet ger (…/hemmet/#chatgpt) öppnar ChatGPT-rutan direkt.
+   På iPhone öppnar ChatGPT-appen länkar i sitt eget fönster, som inte har nyckeln från Safari.
+   Då förklarar sidan i stället hur man kommer till Safari. Adressen följer med dit. */
+function takeChatLink() {
+  // Tål ett skiljetecken som följt med länken, till exempel "#chatgpt." i slutet av en mening.
+  let raw = (location.hash || '').replace(/^#/, '');
+  try { raw = decodeURIComponent(raw); } catch { /* behåll som den är */ }
+  if (!/^chatgpt[.,;:!?)\]]*$/i.test(raw)) return false;
+  S.chatLink = true;
+  return true;
+}
+
+function openChatLink() {
+  if (!S.chatLink || !S.data) return;   // körs igen när datat har laddats
+  S.chatLink = false;
+  if (S.key) {
+    history.replaceState(null, '', location.pathname + location.search + '#kalkyl');
+    openChatGPT();
+    return;
+  }
+  // Utan nyckel står #chatgpt kvar, så att Öppna i Safari tar med sig den och rutan öppnas där.
+  openDialog('Öppna i Safari', [
+    h('p', { class: 'sheet-lead' }, 'Den här webbläsaren har inte nyckeln till Vårt hem, så sidan är låst här.'),
+    h('p', null, 'På iPhone öppnar ChatGPT länkar i sitt eget fönster. Välj Öppna i Safari, så kommer rutan upp där. Du kan också öppna Vårt hem från hemskärmen och trycka på ChatGPT.'),
+  ], [h('span', { class: 'spacer' }), h('button', { class: 'btn btn-primary', type: 'button', onclick: closeDialog }, 'Okej')]);
 }
 
 function takeSetupLink() {
