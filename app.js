@@ -1010,7 +1010,8 @@ function budgetCard(d, r, items) {
   if (t.kopt > 0) segs.push(h('span', { class: 'seg kopt', style: { flexBasis: pct(t.kopt, scale) + '%' } }));
   if (t.vald > 0) segs.push(h('span', { class: 'seg plan', style: { flexBasis: pct(t.vald, scale) + '%' } }));
   segs.push(h('span', { class: 'seg rest' }));
-  const meter = h('div', { class: 'meter-wrap slim' },
+  // Utan budget finns inget att mäta mot; en full stapel skulle se ut som 100 procent.
+  const meter = !b.total ? null : h('div', { class: 'meter-wrap slim' },
     h('div', { class: 'meter', role: 'img', 'aria-label': `${r.namn}: köpt ${kr(t.kopt)}, att köpa ${kr(t.vald)}` + (b.total ? `, budget ${kr(b.total)}` : '') }, segs),
     over ? h('div', { class: 'budget-mark', style: { left: `calc(${pct(b.total, scale)}% - 1px)` } }) : null);
 
