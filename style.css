@@ -350,6 +350,7 @@ dialog.sheet::backdrop { background: rgb(35 30 24 / .45); }
 .sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 16px 10px 20px; border-bottom: 1px solid var(--line); }
 .sheet-head h2 { font-size: 19px; font-weight: 650; }
 .sheet-body { padding: 16px 20px 20px; overflow-y: auto; display: grid; gap: 16px; }
+.sheet-body > p { white-space: pre-line; }   /* anteckningar behåller sina radbrytningar */
 .sheet-foot {
   display: flex; align-items: center; gap: 10px; padding: 12px 20px calc(12px + var(--safe-b));
   border-top: 1px solid var(--line); background: var(--surface);
