@@ -147,6 +147,240 @@
    "av": "Rasmus",
    "skapad": "2026-09-27T20:20:23.000Z",
    "andrad": "2026-09-27T20:20:23.000Z"
+  },
+  {
+   "id": "m1a0e6c4a776ffzk",
+   "namn": "TV-vägg: IKEA-stommar och beslag",
+   "rum": "vardagsrum",
+   "status": "vald",
+   "pris": 6640,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://github.com/rasmusbergstrom99/hemmet/blob/data/dokument/tv-vagg/README.md",
+   "bild": "https://raw.githubusercontent.com/rasmusbergstrom99/hemmet/data/dokument/tv-vagg/skiss-hyllor-over-tv.png",
+   "bildSha": "",
+   "matt": {
+    "b": 222,
+    "d": 40,
+    "h": 260
+   },
+   "betalar": "delat",
+   "not": "METOD väggskåp i svartgrått: underskåp 80 + 60 + 80, pelare 40 × 100 och 40 × 80 på var sida. VALLSTENA-dörrar som räfflas, gångjärn, hyllplan, ben, sockel, skenor. Länken går till hela planen med skisser och inköpslista.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T06:47:22.000Z",
+   "andrad": "2026-09-28T06:47:22.000Z"
+  },
+  {
+   "id": "m1a0e6c4a7769ug4",
+   "namn": "TV-vägg: täcksidor SINARP brun",
+   "rum": "vardagsrum",
+   "status": "vald",
+   "pris": 839,
+   "antal": 2,
+   "ca": false,
+   "lank": "https://www.ikea.com/se/sv/p/sinarp-taecksida-brun-20404142/",
+   "bild": "https://www.ikea.com/se/sv/images/products/sinarp-taecksida-brun__0943070_pe797136_s5.jpg",
+   "bildSha": "",
+   "matt": {
+    "b": 39,
+    "d": null,
+    "h": 240
+   },
+   "betalar": "delat",
+   "not": "Till båda ändarna. Brunbetsad ekfanér, går att kapa.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T06:47:22.000Z",
+   "andrad": "2026-09-28T06:47:22.000Z"
+  },
+  {
+   "id": "m1a0e6c4a776oktw",
+   "namn": "TV-vägg: hylla över TV:n, EKBACKEN",
+   "rum": "vardagsrum",
+   "status": "vald",
+   "pris": 699,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://www.ikea.com/se/sv/p/ekbacken-baenkskiva-brun-valnoetsmoenstrad-laminat-90442980/",
+   "bild": "https://www.ikea.com/se/sv/images/products/ekbacken-baenkskiva-brun-valnoetsmoenstrad-laminat__1034506_pe837763_s5.jpg",
+   "bildSha": "",
+   "matt": {
+    "b": 140,
+    "d": 31,
+    "h": null
+   },
+   "betalar": "delat",
+   "not": "Bänkskiva i brun valnötsmönstrad laminat, 186 × 63,5 cm, som sågas till en hylla 140 × 31. Den räcker till två, så en andra hylla kan sättas upp senare. Överkant 170 cm.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T06:47:22.000Z",
+   "andrad": "2026-09-28T06:47:22.000Z"
+  },
+  {
+   "id": "m1a0e6c4a776f08p",
+   "namn": "TV-vägg: LED-list ORMANÄS, 2 st + fjärrkontroll",
+   "rum": "vardagsrum",
+   "status": "vald",
+   "pris": 946,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://www.ikea.com/se/sv/p/ormanaes-led-ljuslist-smart-tradloes-dimbar-faergat-och-vitt-spektrum-40497395/",
+   "bild": "",
+   "bildSha": "",
+   "matt": {
+    "b": null,
+    "d": null,
+    "h": null
+   },
+   "betalar": "delat",
+   "not": "Två listor på 4 m (399 kr st), fjärrkontroll och batterier. Varmvit 2 700 K, med stickpropp. Ska sluta säljas snart, köp i tid.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T06:47:22.000Z",
+   "andrad": "2026-09-28T06:47:22.000Z"
+  },
+  {
+   "id": "m1a0e6c4a776jnkj",
+   "namn": "TV-vägg: ribbpaneler FibroTech Quanti valnöt",
+   "rum": "vardagsrum",
+   "status": "vald",
+   "pris": 499,
+   "antal": 3,
+   "ca": false,
+   "lank": "https://www.bauhaus.se/akustikpanel-fibrotech-quanti-valnot-18x520x2440mm",
+   "bild": "https://www.bauhaus.se/media/catalog/product/cache/3bb3efcfae3f5a58e39cf1fc8fc4973f/1/4/1434800.jpg",
+   "bildSha": "",
+   "matt": {
+    "b": 52,
+    "d": null,
+    "h": 244
+   },
+   "betalar": "delat",
+   "not": "Äkta valnötsfanér på svart filt. Kapas till 140 × 180 cm bakom TV:n. Skickas från Bauhaus webblager, frakt tillkommer.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T06:47:22.000Z",
+   "andrad": "2026-09-28T06:47:22.000Z"
+  },
+  {
+   "id": "m1a0e6c4a7764z3c",
+   "namn": "TV-vägg: räfflad valnötspanel, Indoor Wood",
+   "rum": "vardagsrum",
+   "status": "vald",
+   "pris": 899,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://indoorwood.se/products/designpanel-fingerpanel-valnot",
+   "bild": "https://indoorwood.se/cdn/shop/files/f2.jpg?v=1773392198&width=2048",
+   "bildSha": "",
+   "matt": {
+    "b": 60,
+    "d": null,
+    "h": 270
+   },
+   "betalar": "delat",
+   "not": "Limmas på underskåpens fem luckor så de blir räfflade som skrivbordet. Rea 899 kr, ordinarie 1 195 kr. Gör en provdörr först.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T06:47:22.000Z",
+   "andrad": "2026-09-28T06:47:22.000Z"
+  },
+  {
+   "id": "m1a0e6c4a776jyil",
+   "namn": "TV-vägg: lim, folie, TV-fäste och smådelar",
+   "rum": "vardagsrum",
+   "status": "vald",
+   "pris": 2050,
+   "antal": 1,
+   "ca": true,
+   "lank": "",
+   "bild": "",
+   "bildSha": "",
+   "matt": {
+    "b": null,
+    "d": null,
+    "h": null
+   },
+   "betalar": "delat",
+   "not": "Lim till panelen på luckorna, 8 rullar självhäftande valnötsfolie, fast TV-fäste för 55 tum (ca 300 kr), reglar mellan pelarna, svart list mot taket, förankring och lister till hyllan.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T06:47:22.000Z",
+   "andrad": "2026-09-28T06:47:22.000Z"
+  },
+  {
+   "id": "m1a0e6c4a7768xrz",
+   "namn": "TV-vägg: mässingshandtag, 5 st",
+   "rum": "vardagsrum",
+   "status": "vald",
+   "pris": 58,
+   "antal": 5,
+   "ca": false,
+   "lank": "https://www.badshop.se/interior/inredning-och-belysning/beslag/handtag/profilhandtag-beslag-design-side-40-mm/p-1801128-1801130",
+   "bild": "",
+   "bildSha": "",
+   "matt": {
+    "b": null,
+    "d": null,
+    "h": null
+   },
+   "betalar": "delat",
+   "not": "Beslag Design Side 40, borstad mässingsfärg. Sitter på luckornas överkant, som på skrivbordet.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T06:47:22.000Z",
+   "andrad": "2026-09-28T06:47:22.000Z"
+  },
+  {
+   "id": "m1a0e6c4a776snfe",
+   "namn": "TV-vägg, kan vänta: hyllplan i underskåpen och LED under hyllan",
+   "rum": "vardagsrum",
+   "status": "ide",
+   "pris": 847,
+   "antal": 1,
+   "ca": false,
+   "lank": "",
+   "bild": "",
+   "bildSha": "",
+   "matt": {
+    "b": null,
+    "d": null,
+    "h": null
+   },
+   "betalar": "delat",
+   "not": "UTRUSTA-hyllplan inne i underskåpen (448 kr) och en tredje ORMANÄS-list under TV-hyllan (399 kr).",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T06:47:22.000Z",
+   "andrad": "2026-09-28T06:47:22.000Z"
   }
  ],
  "moodboard": [
@@ -190,5 +424,5 @@
    "skapad": "2026-09-27T20:11:44.385Z"
   }
  ],
- "andrad": "2026-09-27T20:20:23.000Z"
+ "andrad": "2026-09-28T06:47:22.000Z"
 }
