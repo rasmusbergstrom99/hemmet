@@ -1202,6 +1202,7 @@ function imagePicker(initial) {
       if (it) { ev.preventDefault(); takeFile(it.getAsFile()); }
     },
     hasImage() { return !!(file || (!removed && (urlIn.value.trim() || current))); },
+    setUrl(u) { file = null; removed = false; urlIn.value = u; urlRow.hidden = false; err.hidden = true; show(); },
     // → { bild, bildSha, uploaded, oldToDelete }
     async result(old) {
       const out = { bild: old ? old.bild : '', bildSha: old ? old.bildSha : '' };
@@ -1252,6 +1253,21 @@ function openItem(id) {
   const linkIn = h('input', { class: 'in', type: 'url', inputmode: 'url', value: m ? m.lank : '', placeholder: 'https://', autocomplete: 'off' });
   const fLink = field('Länk till produkten', linkIn);
   const pic = imagePicker(m ? m.bild : '');
+  // En produktlänk utan bild: hämta butikens produktbild. En bild man själv valt ersätts aldrig.
+  const imgNote = h('p', { class: 'help', hidden: true, role: 'status' });
+  const fetchImage = () => {
+    const link = linkIn.value.trim();
+    if (!link || pic.hasImage() || !safeUrl(link)) return;
+    imgNote.textContent = 'Hämtar bild från butiken…'; imgNote.hidden = false;
+    productImage(link).then((img) => {
+      if (linkIn.value.trim() !== link) return;
+      if (img && !pic.hasImage()) { pic.setUrl(img); imgNote.textContent = 'Bilden är hämtad från butiken.'; }
+      else if (!img) imgNote.textContent = 'Hittade ingen bild hos butiken. Lägg till en själv om du vill.';
+      else imgNote.hidden = true;
+    });
+  };
+  linkIn.addEventListener('change', fetchImage);
+  linkIn.addEventListener('paste', () => setTimeout(fetchImage, 0));
   const dimIn = ['b', 'd', 'h'].map((k) => h('input', { class: 'in', type: 'text', inputmode: 'decimal', value: m && m.matt[k] ? String(m.matt[k]).replace('.', ',') : '', 'aria-label': { b: 'Bredd i cm', d: 'Djup i cm', h: 'Höjd i cm' }[k], placeholder: { b: 'Bredd', d: 'Djup', h: 'Höjd' }[k] }));
   const dimErr = h('p', { class: 'err', hidden: true });
   const pay = radios('betalar', PAYERS, m ? m.betalar : 'delat');
@@ -1340,6 +1356,7 @@ function openItem(id) {
     h('div', { class: 'field' }, h('span', { class: 'flabel' }, 'Vem betalar'), pay.el),
     h('div', { class: 'field' }, h('span', { class: 'flabel' }, 'Bild'), pic.el),
     fLink.el,
+    imgNote,
     h('div', { class: 'field' }, h('span', { class: 'flabel' }, 'Mått i cm (om ni vill jämföra med väggarna)'), h('div', { class: 'row3' }, dimIn), dimErr),
     fNote.el,
     formErr,
@@ -1650,6 +1667,32 @@ function openRoomBudget(rid) {
   ], [h('span', { class: 'spacer' }), h('button', { class: 'btn', type: 'button', onclick: closeDialog }, 'Avbryt'), saveBtn], { focus: inR });
 }
 
+// ---------------------------------------------------------------- produktbild
+
+/* Butikernas sidor går inte att läsa direkt från webbläsaren. Jina Reader (r.jina.ai) hämtar
+   sidan och svarar med sidans delningsbild (og:image), som är produktbilden hos IKEA, JYSK,
+   Chilli, Barstol, Nordic Nest, Royal Design och Brandstationen. Tjänsten får bara länken.
+   Går det inte blir det ingen bild, precis som förut. Svaret sparas per länk under besöket. */
+const productImgs = new Map();
+function productImage(link) {
+  const url = safeUrl(link);
+  if (!url || !url.startsWith('https:')) return Promise.resolve('');
+  if (!productImgs.has(url)) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 12000);
+    productImgs.set(url, fetch('https://r.jina.ai/' + url, { headers: { Accept: 'application/json' }, signal: ctrl.signal })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => {
+        const meta = (j && j.data && j.data.metadata) || {};
+        const img = String(meta['og:image'] || meta['twitter:image'] || '').trim();
+        return chatHttps(img.replace(/^http:\/\//i, 'https://'));
+      })
+      .catch(() => '')
+      .finally(() => clearTimeout(timer)));
+  }
+  return productImgs.get(url);
+}
+
 // ---------------------------------------------------------------- ChatGPT
 
 // Ren validering: varken DOM, tid, slump eller skrivningar. Identitet och datum sätts vid spara.
@@ -1797,9 +1840,17 @@ function chatPreview(draft) {
   if (draft.error) { box.append(h('p', { class: 'err', role: 'alert' }, draft.error)); return box; }
   if (chatCount(draft)) box.append(h('p', { class: 'chat-count' }, `${chatCountText(draft)} läggs in.`));
   const group = (title, rows) => { if (rows.length) box.append(h('section', { class: 'chat-group' }, h('h4', null, title), rows)); };
-  group('Möbler', draft.mobler.map((m) => h('div', { class: 'chat-row' },
-    h('strong', null, m.namn), h('div', { class: 'chat-meta' }, roomName(S.data, m.rum), statusChip(m.status)),
-    h('p', null, chatPrice(m)), dimsText(m) ? h('p', { class: 'help' }, dimsText(m)) : null)));
+  group('Möbler', draft.mobler.map((m) => {
+    const info = [h('strong', null, m.namn), h('div', { class: 'chat-meta' }, roomName(S.data, m.rum), statusChip(m.status)),
+      h('p', null, chatPrice(m)), dimsText(m) ? h('p', { class: 'help' }, dimsText(m)) : null];
+    if (!m.bild && !m._hamtar) return h('div', { class: 'chat-row' }, info);
+    let thumb;
+    if (m.bild) {
+      thumb = h('img', { src: m.bild, alt: '', referrerpolicy: 'no-referrer' });
+      thumb.addEventListener('error', () => thumb.replaceWith(h('span', { class: 'help' }, 'Bilden går inte att visa')), { once: true });
+    } else thumb = h('span', { class: 'help' }, 'Hämtar bild…');
+    return h('div', { class: 'chat-row chat-image' }, h('div', { class: 'chat-thumb' }, thumb), h('div', null, info));
+  }));
   group('Moodboard', draft.moodboard.map((b) => {
     const img = h('img', { src: b.bild, alt: '', referrerpolicy: 'no-referrer' });
     img.addEventListener('error', () => img.replaceWith(h('span', { class: 'help' }, 'Bilden går inte att visa')), { once: true });
@@ -1834,6 +1885,15 @@ function openChatGPT() {
   const draw = () => {
     if (saving) return;
     draft = parseChatGPT(input.value, S.data);
+    // Möbler med produktlänk men utan bild får butikens produktbild. Ritas om när bilderna kommit.
+    const current = draft;
+    current.bilder = current.mobler.filter((m) => !m.bild && m.lank).map((m) => {
+      m._hamtar = true;
+      return productImage(m.lank).then((img) => { if (img) m.bild = img; m._hamtar = false; });
+    });
+    if (current.bilder.length) {
+      Promise.all(current.bilder).then(() => { if (!saving && draft === current) preview.replaceChildren(chatPreview(current)); });
+    }
     preview.replaceChildren(chatPreview(draft));
     const count = chatCount(draft);
     save.disabled = !count;
@@ -1859,6 +1919,12 @@ function openChatGPT() {
   } }, icon('clipboard-text'), 'Klistra in');
   save.addEventListener('click', async () => {
     if (!guardEdit() || saving || !chatCount(draft)) return;
+    if (draft.bilder && draft.bilder.length) {
+      // Vänta in produktbilderna, men aldrig längre än hämtningens egen gräns.
+      saving = true; setBusyButton(save, true);
+      await Promise.race([Promise.all(draft.bilder), sleep(12500)]);
+      saving = false; setBusyButton(save, false);
+    }
     const me = S.me, author = who(), now = nowIso();
     const items = draft.mobler.map((m) => normItem({ ...m, id: newId('m'), av: author, skapad: now, andrad: now }));
     const images = draft.moodboard.map((b) => normImg({ ...b, id: newId('i'), av: author, skapad: now }));
