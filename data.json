@@ -308,6 +308,188 @@
    "av": "Rasmus",
    "skapad": "2026-09-28T07:37:21.000Z",
    "andrad": "2026-09-28T07:37:21.000Z"
+  },
+  {
+   "id": "m1a0e7b9b042jr24",
+   "namn": "TV-vägg: Tessan till taket, Chilli",
+   "rum": "vardagsrum",
+   "status": "ide",
+   "pris": 3995,
+   "antal": 1,
+   "ca": true,
+   "lank": "https://github.com/rasmusbergstrom99/hemmet/blob/data/dokument/tv-vagg/alternativ.md",
+   "bild": "https://raw.githubusercontent.com/rasmusbergstrom99/hemmet/data/dokument/tv-vagg/alternativ/tessan-till-taket.png",
+   "bildSha": "",
+   "matt": {
+    "b": 226,
+    "d": 43,
+    "h": 244
+   },
+   "betalar": "delat",
+   "not": "Går nästan upp till taket: stängda skåp i mörk valnöt på båda sidor och en bänk emellan. Inga handtag. Vår egen kombination av Chillis lösa delar. Länken går till jämförelsen med skiss och produktlänkar.\n\nChilli, 3 995 kr:\n• Tessan väggskåp 45 cm brun, 45 × 117 × 32, 4 st à 799 kr. Två staplade på varje sida.\n• Tessan TV-bänk 100 cm brun, 100 × 37 × 43, 799 kr.\n\n226 cm bred med skåpen mot väggarna, överkant ca 244 cm. TV:n får 6,5 cm luft per sida, det är knappt.\nBänken är 11 cm djupare än skåpen och har 2,7 av 5 i betyg.\nRibbor bakom TV:n går att lägga till för 1 377 kr (egen idé).\nFrakt tillkommer. Priser från chilli.se 28 sep.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T11:15:01.000Z",
+   "andrad": "2026-09-28T11:15:01.000Z"
+  },
+  {
+   "id": "m1a0e7b9b042a6xh",
+   "namn": "TV-vägg: EKET-ram, IKEA",
+   "rum": "vardagsrum",
+   "status": "ide",
+   "pris": 6320,
+   "antal": 1,
+   "ca": true,
+   "lank": "https://github.com/rasmusbergstrom99/hemmet/blob/data/dokument/tv-vagg/alternativ.md",
+   "bild": "https://raw.githubusercontent.com/rasmusbergstrom99/hemmet/data/dokument/tv-vagg/alternativ/eket-ram.png",
+   "bildSha": "",
+   "matt": {
+    "b": 210,
+    "d": 35,
+    "h": 245
+   },
+   "betalar": "delat",
+   "not": "Stängda pelare, bänk och brygga i brun valnötsmönstrad, samma som LACK-hyllorna. Går upp till 245 cm. Länken går till jämförelsen med skiss och produktlänkar.\n\nIKEA, 6 320 kr:\n• EKET väggskåp med hyllplan och dörr, 35 × 35 × 70, 6 st à 545 kr.\n• EKET väggskåp med dörr, 35 × 35 × 35, 2 st à 345 kr.\n• EKET förvaringskombination 140 × 35 × 35, fyra öppna fack, 2 st à 1 180 kr.\n\n210 cm bred, 8 cm vägg i varje ände. TV-nischen 140 × 175, 8,5 cm luft per sida.\nIKEA kräver minst 5 cm mellan skåpen och taket. Många moduler ska hängas exakt i våg.\nRibbor bakom TV:n går att lägga till för 1 377 kr (egen idé).\nFrakt tillkommer. Priser från ikea.se 28 sep.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T11:15:01.000Z",
+   "andrad": "2026-09-28T11:15:01.000Z"
+  },
+  {
+   "id": "m1a0e7b9b0425prj",
+   "namn": "TV-vägg: BILLY och EKET, IKEA",
+   "rum": "vardagsrum",
+   "status": "ide",
+   "pris": 3958,
+   "antal": 1,
+   "ca": true,
+   "lank": "https://github.com/rasmusbergstrom99/hemmet/blob/data/dokument/tv-vagg/alternativ.md",
+   "bild": "https://raw.githubusercontent.com/rasmusbergstrom99/hemmet/data/dokument/tv-vagg/alternativ/billy-och-eket.png",
+   "bildSha": "",
+   "matt": {
+    "b": 220,
+    "d": 35,
+    "h": 237
+   },
+   "betalar": "delat",
+   "not": "Två höga bokhyllor med bänk och brygga emellan, i brun valnötsmönstrad. Går upp till 237 cm. Länken går till jämförelsen med skiss och produktlänkar.\n\nIKEA, 3 958 kr:\n• BILLY bokhylla med förhöjningsdel, 40 × 28 × 237, 2 st à 799 kr.\n• EKET förvaringskombination 140 × 35 × 35, 2 st à 1 180 kr.\n\n220 cm bred, 3 cm luft i varje ände. TV-nischen 140 × 167, 8,5 cm luft per sida.\nÖppna hyllor. BILLY är 28 cm djup och EKET 35, så fronterna ligger inte i linje.\nRibbor bakom TV:n går att lägga till för 1 377 kr (egen idé).\nFrakt tillkommer. Priser från ikea.se 28 sep.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T11:15:01.000Z",
+   "andrad": "2026-09-28T11:15:01.000Z"
+  },
+  {
+   "id": "m1a0e7b9b042i7z7",
+   "namn": "TV-vägg: Bernice med ribbor till taket",
+   "rum": "vardagsrum",
+   "status": "ide",
+   "pris": 5917,
+   "antal": 1,
+   "ca": true,
+   "lank": "https://github.com/rasmusbergstrom99/hemmet/blob/data/dokument/tv-vagg/alternativ.md",
+   "bild": "https://raw.githubusercontent.com/rasmusbergstrom99/hemmet/data/dokument/tv-vagg/alternativ/bernice-med-ribbor.png",
+   "bildSha": "",
+   "matt": {
+    "b": 224,
+    "d": 38,
+    "h": 260
+   },
+   "betalar": "delat",
+   "not": "Bernice 220 med valnötsribbor på väggen ovanför, ända upp till taket. Länken går till jämförelsen med skiss och produktlänkar.\n\n• Chilli: Bernice TV-skåp 220 cm brun (DEROMI II), 220 × 150 × 38, 4 999 kr.\n• Hornbach: akustikpanel valnöt 56 × 260, 2 st à 459 kr. Kapas till fyra bitar på 56 × 90 som täcker 224 cm.\nSumma 5 917 kr.\n\nMöbeln hängs 20 cm över golvet och slutar på 170. Ribborna tar resten upp till taket.\nValnöten kan ha olika ton, och upptill blir det ingen förvaring. Tornet sitter på ena sidan.\nFrakt tillkommer. Priser 28 sep.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T11:15:01.000Z",
+   "andrad": "2026-09-28T11:15:01.000Z"
+  },
+  {
+   "id": "m1a0e7b9b0421w9l",
+   "namn": "TV-vägg: Bernice 220, Chilli",
+   "rum": "vardagsrum",
+   "status": "ide",
+   "pris": 4999,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://www.chilli.se/m%C3%B6bler/mediam%C3%B6bler/tv-mobelset/bernice-tv-sk%C3%A5p-220-cm-brun-p3447247",
+   "bild": "https://raw.githubusercontent.com/rasmusbergstrom99/hemmet/data/dokument/tv-vagg/alternativ/bernice-220.png",
+   "bildSha": "",
+   "matt": {
+    "b": 220,
+    "d": 38,
+    "h": 150
+   },
+   "betalar": "delat",
+   "not": "Räfflad valnötspanel bakom TV:n, bänk och ett torn med öppna hyllor på ena sidan. 220 × 150 × 38. Samma möbel med stängt torn heter DEROMI VI och kostar lika mycket.\nHängd 20 cm över golvet slutar den på 170, så ca 90 cm vägg blir tom upp till taket.\nNyhet, inga omdömen. Ordinarie pris 6 999 kr. Frakt tillkommer. Pris från chilli.se 28 sep.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T11:15:01.000Z",
+   "andrad": "2026-09-28T11:15:01.000Z"
+  },
+  {
+   "id": "m1a0e7b9b0423jc3",
+   "namn": "TV-vägg: Bulet, Chilli",
+   "rum": "vardagsrum",
+   "status": "ide",
+   "pris": 3799,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://www.chilli.se/m%C3%B6bler/mediam%C3%B6bler/tv-mobelset/bulet-tv-sk%C3%A5p-brun-p3447181",
+   "bild": "https://raw.githubusercontent.com/rasmusbergstrom99/hemmet/data/dokument/tv-vagg/alternativ/bulet.png",
+   "bildSha": "",
+   "matt": {
+    "b": 224,
+    "d": 33,
+    "h": 160
+   },
+   "betalar": "delat",
+   "not": "Valnöt med två pelare på ena sidan, en stängd och en med svarta öppna hyllor. Överskåp och bänk ramar in TV:n. 224 × 160 × 33.\nHängd så att TV:ns mitt hamnar på 115 slutar den på ca 195, så ca 65 cm vägg blir tom.\nBara 1 cm luft mot väggen i varje ände. Är väggarna inte raka går den inte in.\nNyhet, inga omdömen. Ordinarie pris 4 999 kr. Frakt tillkommer. Pris från chilli.se 28 sep.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T11:15:01.000Z",
+   "andrad": "2026-09-28T11:15:01.000Z"
+  },
+  {
+   "id": "m1a0e7b9b042q37f",
+   "namn": "Ribbor bakom TV:n, Hornbach valnöt",
+   "rum": "vardagsrum",
+   "status": "ide",
+   "pris": 459,
+   "antal": 3,
+   "ca": false,
+   "lank": "https://www.hornbach.se/p/akustikpanel-valnot-18x560x2600mm/12085623/",
+   "bild": "https://media.hornbach.se/hb/packshot/as.155440931.jpg?dvid=8",
+   "bildSha": "",
+   "matt": {
+    "b": 56,
+    "d": 1.8,
+    "h": 260
+   },
+   "betalar": "delat",
+   "not": "Valnötsribbor i TV-nischen, som i 1B. Går att lägga till Tessan till taket, EKET-ram och BILLY och EKET.\nHornbach akustikpanel valnöt, 56 × 260 × 1,8 cm, MDF med äkta träfanér i valnötsfärg. Tre paneler kapas till nischens bredd, 136–140 cm.\nFrakt tillkommer. Pris från hornbach.se 28 sep.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-09-28T11:15:01.000Z",
+   "andrad": "2026-09-28T11:15:01.000Z"
   }
  ],
  "moodboard": [
@@ -364,5 +546,5 @@
    "skapad": "2026-09-28T11:09:00.710Z"
   }
  ],
- "andrad": "2026-09-28T11:10:23.228Z"
+ "andrad": "2026-09-28T11:15:01.000Z"
 }
