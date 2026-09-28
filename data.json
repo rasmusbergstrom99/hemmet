@@ -253,32 +253,6 @@
    "andrad": "2026-09-28T07:37:21.000Z"
   },
   {
-   "id": "m1a0e6f268a51pfm",
-   "namn": "Golvlampa Cannes 140, Globen Lighting",
-   "rum": "vardagsrum",
-   "status": "ide",
-   "pris": 2639,
-   "antal": 1,
-   "ca": false,
-   "lank": "https://www.svenssons.se/varumarken/globen-lighting/cannes-golvlampa-140-cm/?variantId=648917-01",
-   "bild": "https://prod.nordicnest.dev/assets/blobs/globen-lighting-cannes-golvlampa-140-cm-mocha/648917-01_1_ProductImageMain-5aeaba5d0f.png",
-   "bildSha": "",
-   "matt": {
-    "b": 42,
-    "d": 42,
-    "h": 140
-   },
-   "betalar": "delat",
-   "not": "Riktat läsljus i mockabrun metall, går ihop med valnöten. Kampanjpris, ordinarie 3 499 kr. Lampan ingår inte: välj en dimbar E27 på 2 200–2 700 K.",
-   "gillar": {
-    "rasmus": false,
-    "emily": false
-   },
-   "av": "Rasmus",
-   "skapad": "2026-09-28T07:37:21.000Z",
-   "andrad": "2026-09-28T07:37:21.000Z"
-  },
-  {
    "id": "m1a0e6f268a510cx",
    "namn": "Disco mushroom, portabel",
    "rum": "vardagsrum",
@@ -398,5 +372,5 @@
    "skapad": "2026-09-27T20:11:44.385Z"
   }
  ],
- "andrad": "2026-09-28T07:37:21.000Z"
+ "andrad": "2026-09-28T07:40:03.794Z"
 }
