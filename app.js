@@ -1748,6 +1748,8 @@ function chatPrice(m) {
   return m.pris == null ? 'pris saknas' : `${m.ca ? 'ca ' : ''}${m.antal > 1 ? `${m.antal} × ` : ''}${kr(m.pris)}`;
 }
 function chatNote(text) {
+  // En rad per anteckning, så att radbrytningar i anteckningen inte ser ut som nya rubriker i läget.
+  text = text.replace(/\s+/g, ' ').trim();
   if (text.length <= 200) return text;
   const cut = text.slice(0, 200);
   return cut.replace(/\s+\S*$/, '').trimEnd() + '…';
