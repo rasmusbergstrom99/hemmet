@@ -6,8 +6,8 @@ Plan för TV-väggen mot badrumsväggen i vardagsrummet: 226 cm bred, från golv
 svartgrått. Luckorna blir räfflade i valnöt, som skrivbordet. Bakom TV:n sitter valnötsribbor
 med svarta springor ända upp, och ovanför TV:n en lång hylla.
 
-Priserna ligger också i möbelkalkylen under Vardagsrum, på raderna som börjar med "TV-vägg".
-Uppdaterad 28 september 2026.
+I möbelkalkylen ligger allt som en post, "TV-väggen" under Vardagsrum, med hela inköpslistan i
+anteckningen. Uppdaterad 28 september 2026.
 
 ## Så ser den ut
 
@@ -43,9 +43,8 @@ Första skissen, med en vit grundversion bredvid valnötsversionen:
 | Badshop | Mässingshandtag Beslag Design Side 40, 5 st | 290 |
 | | **Totalt** | **ca 14 700** |
 
-Två saker kan vänta. De ligger som "idé" i kalkylen och räknas inte mot budgeten: hyllplan inne
-i underskåpen (448 kr) och en tredje LED-list under hyllan (399 kr). Med dem blir det ca
-15 550 kr. Frakt ingår inte.
+Två saker kan vänta och ingår inte i priset: hyllplan inne i underskåpen (448 kr) och en tredje
+LED-list under hyllan (399 kr). Med dem blir det ca 15 550 kr. Frakt ingår inte.
 
 **Produktsidor**
 
