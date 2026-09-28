@@ -9,6 +9,9 @@ med svarta springor ända upp, och ovanför TV:n en lång hylla.
 I möbelkalkylen ligger allt som en post, "TV-väggen" under Vardagsrum, med hela inköpslistan i
 anteckningen. Uppdaterad 28 september 2026.
 
+**Billigare alternativ**, bland annat fyra som går upp mot taket för ca 4 000–6 300 kr, finns i
+[alternativ.md](alternativ.md). De ligger också som idéer i Vårt hem.
+
 ## Så ser den ut
 
 ![Valnötsversionen med en och med två hyllor, plus en sidovy](skiss-hyllor-over-tv.png)
