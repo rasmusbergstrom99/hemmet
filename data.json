@@ -282,6 +282,84 @@
    "av": "Rasmus",
    "skapad": "2026-09-28T07:37:21.000Z",
    "andrad": "2026-09-28T07:37:21.000Z"
+  },
+  {
+   "id": "m1a0f64f9a2a0mvg",
+   "namn": "TV-vägg: Bernice 260 brun, Chilli",
+   "rum": "vardagsrum",
+   "status": "ide",
+   "pris": 7499,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://www.chilli.se/m%C3%B6bler/mediam%C3%B6bler/tv-mobelset/bernice-tv-sk%C3%A5p-260-cm-brun-p3447246",
+   "bild": "https://www.chilli.se/assets/blobs/m%C3%B6bler-mediam%C3%B6bler-bernice-tv-sk%C3%A5p-260-cm-brun/1e97628f-301e-4bf5-96e2-a6cdd3658f93.jpg",
+   "bildSha": "",
+   "matt": {
+    "b": 260,
+    "d": 38,
+    "h": 150
+   },
+   "betalar": "delat",
+   "not": "Valnöt med räfflad panel bakom TV:n. Samma serie som Bernice 220, nu i full bredd för väggen på 266 cm, med 3 cm luft per sida.\n\n• Två torn, 40 × 150 cm, och en bänk på 180 cm emellan. Panelen bakom TV:n är 120 cm hög.\n• Länken går till varianten med öppna hyllor i båda tornen (DEROMI I). Då nås knapparna vid hallhörnet mellan hyllplanen, genom ett hål i bakstycket.\n• Knappen till höger hamnar troligen bakom panelen och behöver ett hål där.\n• Slutar på 150 cm, ca 110 cm tom vägg upp till taket.\n\nPris från chilli.se 1 okt. Leverans 8–15 okt. Frakt inte kollad. Mät knapparna före köp.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-10-01T07:13:27.000Z",
+   "andrad": "2026-10-01T07:13:27.000Z"
+  },
+  {
+   "id": "m1a0f64f9a2a4lyb",
+   "namn": "TV-vägg: Bunda 250, Chilli",
+   "rum": "vardagsrum",
+   "status": "ide",
+   "pris": 4999,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://www.chilli.se/m%C3%B6bler/mediam%C3%B6bler/tv-mobelset/bunda-tv-v%C3%A4ggenhet-med-led-belysning-250-cm-vit-p3433578",
+   "bild": "https://www.chilli.se/assets/blobs/m%C3%B6bler-mediam%C3%B6bler-bunda-tv-v%C3%A4ggenhet-med-led-belysning-250-cm-vit/345e98f1-41bb-4407-93db-1e40bda91a0b.jpg",
+   "bildSha": "",
+   "matt": {
+    "b": 250,
+    "d": 30,
+    "h": 187
+   },
+   "betalar": "delat",
+   "not": "Högst och billigast. Valnöt och svart marmor, glasdörrar med LED. 8 cm luft per sida på väggen.\n\n• Ett torn på 50 cm, en överdel på 200 cm och en bänk på 200 cm. TV-öppningen är 160 × 116 cm.\n• Tornet kan troligen ställas ut mot städskåpet. Då hamnar de öppna hyllorna vid hallhörnet, och knapparna nås genom ett hål i den svarta panelen.\n• OBS: Chilli kallar den vit i namnet, men färgfältet och alla bilder visar valnöt och svart. Fråga Chilli vilken färg som levereras.\n• Bara 30 cm djup. 3,5 av 5 i betyg (2 betyg).\n\nPris från chilli.se 1 okt. Leverans 8–15 okt. Frakt inte kollad.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-10-01T07:13:27.000Z",
+   "andrad": "2026-10-01T07:13:27.000Z"
+  },
+  {
+   "id": "m1a0f64f9a2amwea",
+   "namn": "TV-vägg: Zalricus, Chilli",
+   "rum": "vardagsrum",
+   "status": "ide",
+   "pris": 9349,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://www.chilli.se/m%C3%B6bler/mediam%C3%B6bler/tv-mobelset/zalricus-m%C3%B6belset-vardagsrum-svart-valn%C3%B6t-p3459843",
+   "bild": "https://www.chilli.se/assets/blobs/m%C3%B6bler-mediam%C3%B6bler-zalricus-m%C3%B6belset-vardagsrum-svart,-valn%C3%B6t/e5bf2acb-6cae-4d5b-aa07-7dfec1069b98.jpg",
+   "bildSha": "",
+   "matt": {
+    "b": 262,
+    "d": 31,
+    "h": 164
+   },
+   "betalar": "delat",
+   "not": "Mörkast valnöt, med svarta räfflade detaljer. Allt hängs på väggen, så golvet blir fritt.\n\n• Två torn, 36 × 164 cm, ett med trädörr och ett med glasdörr, och en bänk på 190 cm. Tillsammans 262 cm, 2 cm luft per sida.\n• Knapparna vid hallhörnet hamnar bakom ett stängt torn. Man får öppna dörren för att tända.\n• Dyrast av de tre.\n\nPris från chilli.se 1 okt. Leverans 8–15 okt. Frakt inte kollad.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-10-01T07:13:27.000Z",
+   "andrad": "2026-10-01T07:13:27.000Z"
   }
  ],
  "moodboard": [
@@ -338,5 +416,5 @@
    "skapad": "2026-09-28T11:09:00.710Z"
   }
  ],
- "andrad": "2026-10-01T06:47:09.000Z"
+ "andrad": "2026-10-01T07:13:27.000Z"
 }
