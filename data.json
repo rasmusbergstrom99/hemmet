@@ -80,7 +80,7 @@
    "namn": "Skrivbord Gudelia, hörn 158 cm",
    "rum": "arbetsplats",
    "status": "kopt",
-   "pris": 3597,
+   "pris": 3796.3,
    "antal": 1,
    "ca": false,
    "lank": "https://www.chilli.se/m%C3%B6bler/bord/kontorsbord/skrivbord/h%C3%B6rnskrivbord/gudelia-skrivbord-158-cm-brun-p3447743",
@@ -92,14 +92,14 @@
     "h": 76
    },
    "betalar": "rasmus",
-   "not": "Brun, valnötsfärg. Beställd 5 oktober för 3 597 kr med rabattkoden DEAL (30 %, ordinarie 5 139 kr), plus 199 kr frakt. Leverans 5–10 vardagar.",
+   "not": "Brun, valnötsfärg. Beställd 5 oktober. Totalt 3 796,30 kr inklusive moms och frakt: ordinarie 5 139 kr, minus 1 541,70 kr med rabattkoden DEAL (30 %), plus 199 kr frakt. Leverans 5–10 vardagar.",
    "gillar": {
     "rasmus": false,
     "emily": false
    },
    "av": "Rasmus",
    "skapad": "2026-09-27T20:20:23.000Z",
-   "andrad": "2026-10-05T10:27:13.000Z"
+   "andrad": "2026-10-05T10:30:24.000Z"
   },
   {
    "id": "m1a0e486a1d7eptx",
@@ -442,5 +442,5 @@
    "skapad": "2026-09-28T11:09:00.710Z"
   }
  ],
- "andrad": "2026-10-05T10:27:13.000Z"
+ "andrad": "2026-10-05T10:30:24.000Z"
 }
