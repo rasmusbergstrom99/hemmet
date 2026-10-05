@@ -360,6 +360,32 @@
    "av": "Rasmus",
    "skapad": "2026-10-01T07:13:27.000Z",
    "andrad": "2026-10-01T07:13:27.000Z"
+  },
+  {
+   "id": "m1a10b6bfe39ycvv",
+   "namn": "Bordslampa RAGGE valnötsbrun, Jotex",
+   "rum": "vardagsrum",
+   "status": "kopt",
+   "pris": 466,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://www.jotex.se/ragge/ragge-bordslampa/1644169-02",
+   "bild": "https://assets.ellosgroup.com/i/ellos/jot_1644169-02_Fs",
+   "bildSha": "",
+   "matt": {
+    "b": 35,
+    "d": 35,
+    "h": 31.5
+   },
+   "betalar": "delat",
+   "not": "Köpt begagnad på Vinted för 466 kr. Ny hos Jotex 989 kr, slutsåld i den här färgen. Svamplampa i stål med valnötsmönster. Två E14-lampor, max 5 W, ingår inte.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-10-05T09:36:29.000Z",
+   "andrad": "2026-10-05T09:36:29.000Z"
   }
  ],
  "moodboard": [
@@ -416,5 +442,5 @@
    "skapad": "2026-09-28T11:09:00.710Z"
   }
  ],
- "andrad": "2026-10-01T07:13:27.000Z"
+ "andrad": "2026-10-05T09:36:29.000Z"
 }
