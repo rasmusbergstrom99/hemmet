@@ -453,7 +453,20 @@
    },
    "av": "Rasmus",
    "skapad": "2026-10-13T15:05:40.818Z"
+  },
+  {
+   "id": "imv6tcks1lq1p",
+   "bild": "bilder/bmv6tcj6mshlr.jpg",
+   "bildSha": "dad9c735b17ca67f640834f53fcc547679232a2b",
+   "rum": "arbetsplats",
+   "text": "",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-10-13T15:05:55.648Z"
   }
  ],
- "andrad": "2026-10-13T15:05:40.818Z"
+ "andrad": "2026-10-13T15:05:55.648Z"
 }
