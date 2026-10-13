@@ -386,6 +386,32 @@
    "av": "Rasmus",
    "skapad": "2026-10-05T09:36:29.000Z",
    "andrad": "2026-10-05T09:36:29.000Z"
+  },
+  {
+   "id": "mmv6tdh09vh42",
+   "namn": "Kontorsstol CONSTANTIA, grön",
+   "rum": "arbetsplats",
+   "status": "ide",
+   "pris": 1625,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://www.beliani.se/kontorsstol-svangbar-gron-constantia-719767.html",
+   "bild": "https://pictureserver.net/pic_storage/pic/44/ca/undef_src_sa_picid_1060453_x_1000_type_whitesh_image.webp?ver=6",
+   "bildSha": "",
+   "matt": {
+    "b": 58,
+    "d": 58,
+    "h": 94
+   },
+   "betalar": "delat",
+   "not": "Priset är enligt dina uppgifter den 13 oktober 2026; kontrollera pris och mått före köp. Höjden är justerbar 86–94 cm (måttfältet visar maxhöjden), sitthöjden är 38–46 cm och sittytan är 47 × 45 cm. Armstödshöjden är 15 cm, stolen väger 12 kg och maxbelastningen är 118 kg.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-10-13T15:06:37.017Z",
+   "andrad": "2026-10-13T15:06:37.017Z"
   }
  ],
  "moodboard": [
@@ -468,5 +494,5 @@
    "skapad": "2026-10-13T15:05:55.648Z"
   }
  ],
- "andrad": "2026-10-13T15:05:55.648Z"
+ "andrad": "2026-10-13T15:06:37.380Z"
 }
