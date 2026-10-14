@@ -475,7 +475,7 @@
    "text": "",
    "gillar": {
     "rasmus": false,
-    "emily": false
+    "emily": true
    },
    "av": "Rasmus",
    "skapad": "2026-10-13T15:05:40.818Z"
@@ -559,5 +559,5 @@
    "skapad": "2026-10-14T08:52:19.413Z"
   }
  ],
- "andrad": "2026-10-14T09:02:42.626Z"
+ "andrad": "2026-10-14T09:03:03.857Z"
 }
