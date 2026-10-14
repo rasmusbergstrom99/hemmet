@@ -412,6 +412,32 @@
    "av": "Rasmus",
    "skapad": "2026-10-13T15:06:37.017Z",
    "andrad": "2026-10-13T15:06:37.017Z"
+  },
+  {
+   "id": "mmv7vk1355vx6",
+   "namn": "Flowerpot Portable bordslampa VP9, krom",
+   "rum": "badrum",
+   "status": "ide",
+   "pris": null,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://www.svenssons.se/varumarken/tradition/flowerpot-portable-bordslampa-vp9/?variantId=507511-01",
+   "bild": "https://prod.nordicnest.dev/assets/blobs/tradition-flowerpot-portabel-bordslampa-vp9-chrome/507511-01_1_ProductImageMain-6e3853602b.jpg",
+   "bildSha": "",
+   "matt": {
+    "b": 16,
+    "d": 16,
+    "h": 29.5
+   },
+   "betalar": "delat",
+   "not": "Portabel och dimbar lampa från &Tradition, formgiven av Verner Panton. Pris för kromvarianten behöver kontrolleras på butikssidan.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Emily",
+   "skapad": "2026-10-14T08:55:28.385Z",
+   "andrad": "2026-10-14T08:55:28.385Z"
   }
  ],
  "moodboard": [
@@ -559,5 +585,5 @@
    "skapad": "2026-10-14T08:52:19.413Z"
   }
  ],
- "andrad": "2026-10-14T08:52:19.413Z"
+ "andrad": "2026-10-14T08:55:28.715Z"
 }
