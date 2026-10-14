@@ -518,7 +518,20 @@
    },
    "av": "Rasmus",
    "skapad": "2026-10-14T08:51:44.857Z"
+  },
+  {
+   "id": "imv7vffwt5ax6",
+   "bild": "bilder/bmv7vfetdnzuw.jpg",
+   "bildSha": "e63d53e852a27a07acfb0f555f52e7ad3ff1bbe9",
+   "rum": "",
+   "text": "",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-10-14T08:51:54.859Z"
   }
  ],
- "andrad": "2026-10-14T08:51:44.857Z"
+ "andrad": "2026-10-14T08:51:54.859Z"
 }
