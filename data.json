@@ -536,8 +536,8 @@
    "id": "imv7vfooblgnh",
    "bild": "bilder/bmv7vfn3ete8t.jpg",
    "bildSha": "8aa49d3e61db464ec3c0449bdee45a9889455334",
-   "rum": "",
-   "text": "",
+   "rum": "sovrum",
+   "text": "Här behöver vi FÄRG",
    "gillar": {
     "rasmus": false,
     "emily": false
@@ -559,5 +559,5 @@
    "skapad": "2026-10-14T08:52:19.413Z"
   }
  ],
- "andrad": "2026-10-14T09:01:34.039Z"
+ "andrad": "2026-10-14T09:02:01.701Z"
 }
