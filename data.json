@@ -389,15 +389,15 @@
   },
   {
    "id": "mmv6tdh09vh42",
-   "namn": "Kontorsstol CONSTANTIA, grön",
+   "namn": "Kontorsstol CONSTANTIA, Off-White",
    "rum": "arbetsplats",
-   "status": "ide",
+   "status": "kopt",
    "pris": 1625,
    "antal": 1,
    "ca": false,
    "lank": "https://www.beliani.se/kontorsstol-svangbar-gron-constantia-719767.html",
-   "bild": "https://pictureserver.net/pic_storage/pic/44/ca/undef_src_sa_picid_1060453_x_1000_type_whitesh_image.webp?ver=6",
-   "bildSha": "",
+   "bild": "bilder/bmvf4gvdu6ov0.jpg",
+   "bildSha": "1c1e9e9bacf88bb7b46bfb91280b09565c68f24a",
    "matt": {
     "b": 58,
     "d": 58,
@@ -411,7 +411,7 @@
    },
    "av": "Rasmus",
    "skapad": "2026-10-13T15:06:37.017Z",
-   "andrad": "2026-10-13T15:06:37.017Z"
+   "andrad": "2026-10-19T10:39:22.111Z"
   },
   {
    "id": "mmvf3io420zgi",
@@ -585,5 +585,5 @@
    "skapad": "2026-10-14T08:52:19.413Z"
   }
  ],
- "andrad": "2026-10-19T10:12:45.411Z"
+ "andrad": "2026-10-19T10:39:22.543Z"
 }
