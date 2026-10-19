@@ -102,32 +102,6 @@
    "andrad": "2026-10-05T10:30:24.000Z"
   },
   {
-   "id": "m1a0e486a1d7eptx",
-   "namn": "Kontorsstol Nampa, cognac",
-   "rum": "arbetsplats",
-   "status": "vald",
-   "pris": 2019,
-   "antal": 1,
-   "ca": false,
-   "lank": "https://www.barstol.se/kontorsstol-nampa-faerg-cognac/318558",
-   "bild": "https://www.barstol.se/media/2f/a5/19/1776241749/buerostuhl-nampa-198110.jpg?ts=1776241749",
-   "bildSha": "",
-   "matt": {
-    "b": 69,
-    "d": 61,
-    "h": 107
-   },
-   "betalar": "delat",
-   "not": "Höjd 97–107 cm, sitthöjd 44–54 cm. Konstläder.",
-   "gillar": {
-    "rasmus": false,
-    "emily": false
-   },
-   "av": "Rasmus",
-   "skapad": "2026-09-27T20:20:23.000Z",
-   "andrad": "2026-09-27T20:20:23.000Z"
-  },
-  {
    "id": "m1a0e486a1d7c1ra",
    "namn": "Persienner, gardinstång och hatthylla",
    "rum": "ovrigt",
@@ -611,5 +585,5 @@
    "skapad": "2026-10-14T08:52:19.413Z"
   }
  ],
- "andrad": "2026-10-19T10:46:41.618Z"
+ "andrad": "2026-10-19T10:47:01.582Z"
 }
