@@ -412,6 +412,32 @@
    "av": "Rasmus",
    "skapad": "2026-10-13T15:06:37.017Z",
    "andrad": "2026-10-13T15:06:37.017Z"
+  },
+  {
+   "id": "mmvf3io420zgi",
+   "namn": "Sminkbord Vento 120 cm - Ek",
+   "rum": "sovrum",
+   "status": "ide",
+   "pris": 3790,
+   "antal": 1,
+   "ca": false,
+   "lank": "https://www.reformasthlm.se/sv/skrivbord-vento-natur",
+   "bild": "https://www.reformasthlm.se/bilder/artiklar/zoom/1499-natural_1.jpg?m=1783088643",
+   "bildSha": "",
+   "matt": {
+    "b": 120,
+    "d": 35,
+    "h": 74
+   },
+   "betalar": "delat",
+   "not": "Tänkt som sminkbord i sovrummet. Ekfärgat med smal bordsskiva. Placering och utrymme för stol behöver kontrolleras.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-10-19T10:12:45.073Z",
+   "andrad": "2026-10-19T10:12:45.073Z"
   }
  ],
  "moodboard": [
@@ -559,5 +585,5 @@
    "skapad": "2026-10-14T08:52:19.413Z"
   }
  ],
- "andrad": "2026-10-14T09:03:03.857Z"
+ "andrad": "2026-10-19T10:12:45.411Z"
 }
