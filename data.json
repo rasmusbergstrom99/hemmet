@@ -438,6 +438,32 @@
    "av": "Rasmus",
    "skapad": "2026-10-19T10:12:45.073Z",
    "andrad": "2026-10-19T10:12:45.073Z"
+  },
+  {
+   "id": "mmvf4qb6o9ren",
+   "namn": "Sminkbord Habitat Kendi Natural",
+   "rum": "sovrum",
+   "status": "ide",
+   "pris": 2378,
+   "antal": 1,
+   "ca": true,
+   "lank": "https://www.habitat.co.uk/product/7872925",
+   "bild": "https://media.4rgos.it/i/Argos/7872925_R_Z001A?h=750&qlt=70&w=750",
+   "bildSha": "",
+   "matt": {
+    "b": 110,
+    "d": 33,
+    "h": 81
+   },
+   "betalar": "delat",
+   "not": "Alternativ till Vento som sminkbord. Två lådor och räfflad naturfärgad träyta. Pris £180 omräknat till cirka 2378 kr den 19 oktober 2026, utan frakt. Habitat levererar normalt inte till Sverige. Placering behöver kontrolleras.",
+   "gillar": {
+    "rasmus": false,
+    "emily": false
+   },
+   "av": "Rasmus",
+   "skapad": "2026-10-19T10:46:41.184Z",
+   "andrad": "2026-10-19T10:46:41.184Z"
   }
  ],
  "moodboard": [
@@ -585,5 +611,5 @@
    "skapad": "2026-10-14T08:52:19.413Z"
   }
  ],
- "andrad": "2026-10-19T10:39:22.543Z"
+ "andrad": "2026-10-19T10:46:41.618Z"
 }
